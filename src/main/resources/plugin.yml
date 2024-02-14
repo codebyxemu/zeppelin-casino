@@ -1,0 +1,7 @@
+name: "ZeppelinCasino"
+description: "A casino plugin for Spigot servers."
+main: "xyz.zeppelin.casino.ZeppelinCasinoPlugin"
+version: "${version}"
+authors: [ "Zeppelin", "AtomBuilt" ]
+api-version: "1.16"
+load: STARTUP
