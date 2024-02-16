@@ -1,7 +1,10 @@
 package xyz.zeppelin.casino;
 
+import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
+import xyz.zeppelin.casino.bridge.EconomyBridge;
 import xyz.zeppelin.casino.bstats.BstatsComponent;
+import xyz.zeppelin.casino.command.CasinoCommand;
 import xyz.zeppelin.casino.commandapi.CommandApiComponent;
 import xyz.zeppelin.casino.common.Environment;
 import xyz.zeppelin.casino.component.PluginComponent;
@@ -11,14 +14,19 @@ import java.util.List;
 
 public class ZeppelinCasinoPlugin extends JavaPlugin {
 
+    @Getter
+    private final EconomyBridge economyBridge = EconomyBridge.createDetected();
+
     /**
      * Components of this plugin that represent different features.
      *
      * @see PluginComponent
      */
     private final List<PluginComponent> components = List.of(
+            economyBridge,
             new CommandApiComponent(this),
-            new BstatsComponent(this)
+            new BstatsComponent(this),
+            new CasinoCommand(this)
     );
 
     @Override

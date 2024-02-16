@@ -10,11 +10,11 @@ import java.util.List;
  * Represents a single player game session.
  */
 @Getter
-public abstract class SinglePlayerGameSession extends BaseGameSession {
+public abstract class SinglePlayerGameSession<T extends Game> extends BaseGameSession<T> {
 
     private final Player player;
 
-    public SinglePlayerGameSession(Game game, Player player) {
+    public SinglePlayerGameSession(T game, Player player) {
         super(game);
         this.player = player;
     }

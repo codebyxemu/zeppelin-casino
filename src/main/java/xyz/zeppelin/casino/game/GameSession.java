@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @see Game
  */
-public interface GameSession {
+public interface GameSession<T extends Game> {
 
     /**
      * Starts the game session.
@@ -41,7 +41,8 @@ public interface GameSession {
      *
      * @return the game being played in the game session.
      */
-    Game getGame();
+    T getGame();
+
 
     /**
      * Returns the players involved in the game session.

@@ -5,9 +5,9 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public abstract class BaseGameSession implements GameSession {
+public abstract class BaseGameSession<T extends Game> implements GameSession<T> {
 
-    protected final Game game;
+    protected final T game;
     protected State state = State.Idle;
 
     @Override

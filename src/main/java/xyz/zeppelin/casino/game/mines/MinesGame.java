@@ -13,32 +13,40 @@ import java.util.function.Supplier;
 
 public class MinesGame implements Game {
 
-    private static final BigDecimal BASE_MINE_CHANCE = BigDecimal.valueOf(0.3);
-    private static final BigDecimal BASE_MIN_MULTIPLIER = BigDecimal.valueOf(1.1);
-    private static final BigDecimal BASE_MAX_MULTIPLIER = BigDecimal.valueOf(2.0);
+    private static final BigDecimal BASE_MINE_CHANCE = BigDecimal.valueOf(0.2);
+    private static final BigDecimal BASE_MIN_MULTIPLIER = BigDecimal.valueOf(1.05);
+    private static final BigDecimal BASE_MAX_MULTIPLIER = BigDecimal.valueOf(1.15);
     private static final MathContext MATH_CONTEXT = new MathContext(3, RoundingMode.DOWN);
     @Getter
     private BigDecimal bet;
     private final GameField[][] fields;
     private final BigDecimal multiplier;
     private final GameField[][] openedFields;
-    @Getter
     private boolean lost = false;
 
     MinesGame(int width, int height, float multiplier, BigDecimal bet) {
+        Preconditions.checkArgument(width > 0, "Width must be positive");
+        Preconditions.checkArgument(height > 0, "Height must be positive");
         this.fields = new GameField[width][height];
         this.openedFields = new GameField[width][height];
         this.multiplier = BigDecimal.valueOf(multiplier);
         this.bet = bet;
     }
 
-    public GameField openField(int width, int height) {
-        Preconditions.checkArgument(width >= 0 && width < fields.length, "Width out of bounds");
-        Preconditions.checkArgument(height >= 0 && height < fields[width].length, "Height out of bounds");
-        if (isFieldOpened(width, height)) return null;
-        GameField field = fields[width][height];
+    /**
+     * Opens a field at the given position.
+     *
+     * @param x The x position of the field.
+     * @param y The y position of the field.
+     * @return The field that was opened, or null if the field was already opened.
+     */
+    public GameField openField(int x, int y) {
+        Preconditions.checkArgument(x >= 0 && x < fields.length, "Width out of bounds");
+        Preconditions.checkArgument(y >= 0 && y < fields[x].length, "Height out of bounds");
+        if (isFieldOpened(x, y)) return null;
+        GameField field = fields[x][y];
         if (field == null) return null;
-        openedFields[width][height] = field;
+        openedFields[x][y] = field;
         processField(field);
         return field;
     }
@@ -57,8 +65,20 @@ public class MinesGame implements Game {
         return openedFields[width][height] != null;
     }
 
+    public boolean hasGameEnded() {
+        return lost || isNoHiddenFields();
+    }
+
+    private boolean isNoHiddenFields() {
+        return Arrays.stream(openedFields).flatMap(Arrays::stream).allMatch(Objects::nonNull);
+    }
+
+    public boolean isStarted() {
+        return Arrays.stream(openedFields).anyMatch(Objects::nonNull);
+    }
+
     public boolean isWon() {
-        return Arrays.stream(openedFields).allMatch(Objects::nonNull);
+        return !lost;
     }
 
     @Override
