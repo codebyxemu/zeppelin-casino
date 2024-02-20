@@ -46,7 +46,7 @@ tasks {
     }
 
     shadowJar {
-        relocate("org.bstats", "com.atombuilt.shulkers.bstats")
+        relocate("org.bstats", "xyz.zeppelin.casino.bstats")
     }
 
     create<ShadowJar>("productionJar") {
