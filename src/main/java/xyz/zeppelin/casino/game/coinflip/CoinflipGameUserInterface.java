@@ -90,21 +90,30 @@ public class CoinflipGameUserInterface extends InventoryUserInterface {
 
     private void addStatus() {
         addItem(
-                () -> {
-                    ItemStack status = getStatusItemMaterial();
-                    ItemMeta statusMeta = Objects.requireNonNull(status.getItemMeta());
-                    if (statusMeta instanceof SkullMeta) {
-                        ((SkullMeta) statusMeta).setOwningPlayer(session.getPlayer());
+                new InventoryUserInterfaceItem() {
+                    @Override
+                    public ItemStack render() {
+                        ItemStack status = getStatusItemMaterial();
+                        ItemMeta statusMeta = Objects.requireNonNull(status.getItemMeta());
+                        if (statusMeta instanceof SkullMeta) {
+                            ((SkullMeta) statusMeta).setOwningPlayer(session.getPlayer());
+                        }
+                        if (animationTick > 60) {
+                            statusMeta.setDisplayName(session.getGame().isWin() ? "§aYou won!" : "§cYou lost!");
+                        } else if (animationTick > 1) {
+                            statusMeta.setDisplayName("§aFlipping the coin...");
+                        } else {
+                            statusMeta.setDisplayName("§aPick a side to flip the coin.");
+                        }
+                        status.setItemMeta(statusMeta);
+                        return status;
                     }
-                    if (animationTick > 60) {
-                        statusMeta.setDisplayName(session.getGame().isWin() ? "§aYou won!" : "§cYou lost!");
-                    } else if (animationTick > 1) {
-                        statusMeta.setDisplayName("§aFlipping the coin...");
-                    } else {
-                        statusMeta.setDisplayName("§aPick a side to flip the coin.");
+
+                    @Override
+                    public boolean onClick(InventoryClickEvent event) {
+                        event.setCancelled(true);
+                        return false;
                     }
-                    status.setItemMeta(statusMeta);
-                    return status;
                 },
                 22
         );
