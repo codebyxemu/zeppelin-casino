@@ -105,7 +105,7 @@ public class MinesGameUserInterface extends InventoryUserInterface {
         };
         for (int x = 0; x < slotMap.length; x++) {
             for (int y = 0; y < slotMap[x].length; y++) {
-                addItem(slotMap[x][y], new GameFieldUserInterfaceItem(session, x, y));
+                addItem(slotMap[x][y], new MinesGameFieldUserInterfaceItem(session, x, y));
             }
         }
         render();

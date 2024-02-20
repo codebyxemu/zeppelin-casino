@@ -10,14 +10,14 @@ import java.math.MathContext;
 import java.util.List;
 import java.util.Objects;
 
-public class GameFieldUserInterfaceItem implements InventoryUserInterfaceItem {
+public class MinesGameFieldUserInterfaceItem implements InventoryUserInterfaceItem {
 
     private final MinesGameSession session;
     private final int x;
     private final int y;
     private MinesGame.GameField field;
 
-    GameFieldUserInterfaceItem(MinesGameSession session, int x, int y) {
+    MinesGameFieldUserInterfaceItem(MinesGameSession session, int x, int y) {
         this.session = session;
         this.x = x;
         this.y = y;
