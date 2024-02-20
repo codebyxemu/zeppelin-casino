@@ -10,6 +10,7 @@ public class MinesGameController {
     MinesGame.GameField processFieldClick(int x, int y) {
         MinesGame game = session.getGame();
         MinesGame.GameField field = game.openField(x, y);
+        if (field == null) return null;
         if (!field.isMine()) {
             MinesGame.MultiplierField multiplierField = (MinesGame.MultiplierField) field;
             session.getBetManager().addMultiplier(multiplierField.multiplier());
