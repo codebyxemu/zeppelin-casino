@@ -9,7 +9,7 @@ import xyz.zeppelin.casino.component.BasePluginComponent;
  */
 public class BstatsComponent extends BasePluginComponent {
 
-    private static final int METRICS_ID = 0; // TODO: Replace with your own bStats ID
+    private static final int METRICS_ID = 21073; // TODO: Replace with your own bStats ID
     private Metrics metrics;
 
     public BstatsComponent(JavaPlugin plugin) {
