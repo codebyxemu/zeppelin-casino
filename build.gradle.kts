@@ -56,6 +56,6 @@ tasks {
 
         // Relocate some dependencies to avoid conflicts with other plugins
         relocate("dev.jorel.commandapi", "xyz.zeppelin.casino.commandapi")
-        relocate("org.bstats", "com.atombuilt.shulkers.bstats")
+        relocate("org.bstats", "xyz.zeppelin.casino.bstats")
     }
 }
