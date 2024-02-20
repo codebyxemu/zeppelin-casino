@@ -1,0 +1,6 @@
+invalid-number: §cInvalid number. Please enter a valid number.
+enter-bet-amount: §aPlease enter the amount you want to bet.
+refund: §aGame has not started, your bet has been refunded.
+bet-cant-be-lower-than-minimum: §cBet can't be lower than the minimum bet.
+bet-cant-be-higher-than-maximum: §cBet can't be higher than the maximum bet.
+insufficient-balance-to-bet: §cYou don't have enough balance to bet that amount.

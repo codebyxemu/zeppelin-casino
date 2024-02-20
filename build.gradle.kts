@@ -14,11 +14,13 @@ repositories {
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/") // Spigot
     maven("https://oss.sonatype.org/content/groups/public/")  // Sonatype
     maven("https://s01.oss.sonatype.org/content/repositories/snapshots/") // Sonatype Snapshots
+    maven("https://jitpack.io") // Jitpack
 }
 
 dependencies {
     // Spigot
     compileOnly("org.spigotmc", "spigot-api", "1.16.4-R0.1-SNAPSHOT")
+    compileOnly("com.github.MilkBowl", "VaultAPI", "1.7")
     // CommandAPI
     implementation("dev.jorel", "commandapi-bukkit-shade", "9.3.0")
     // Java

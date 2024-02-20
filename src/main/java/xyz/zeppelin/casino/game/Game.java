@@ -19,4 +19,6 @@ public interface Game {
     default void clear() {
         // Do nothing by default for convenience
     }
+
+    enum Difficulty {EASY, NORMAL, HARD;}
 }

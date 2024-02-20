@@ -8,29 +8,33 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
 
 public class MinesGame implements Game {
 
-    private static final BigDecimal BASE_MINE_CHANCE = BigDecimal.valueOf(0.2);
-    private static final BigDecimal BASE_MIN_MULTIPLIER = BigDecimal.valueOf(1.05);
-    private static final BigDecimal BASE_MAX_MULTIPLIER = BigDecimal.valueOf(1.15);
     private static final MathContext MATH_CONTEXT = new MathContext(3, RoundingMode.DOWN);
-    @Getter
-    private BigDecimal bet;
+    private final BigDecimal baseMineChance;
+    private final BigDecimal baseMinMultiplier;
+    private final BigDecimal baseMaxMultiplier;
     private final GameField[][] fields;
     private final BigDecimal multiplier;
     private final GameField[][] openedFields;
+    @Getter
+    private final Difficulty difficulty;
     private boolean lost = false;
 
-    MinesGame(int width, int height, float multiplier, BigDecimal bet) {
+    MinesGame(Config config, Game.Difficulty difficulty, int width, int height) {
         Preconditions.checkArgument(width > 0, "Width must be positive");
         Preconditions.checkArgument(height > 0, "Height must be positive");
+        this.difficulty = difficulty;
         this.fields = new GameField[width][height];
         this.openedFields = new GameField[width][height];
-        this.multiplier = BigDecimal.valueOf(multiplier);
-        this.bet = bet;
+        this.multiplier = config.difficultyMultipliers.get(difficulty);
+        this.baseMineChance = config.baseMineChance;
+        this.baseMinMultiplier = config.baseMinMultiplier;
+        this.baseMaxMultiplier = config.baseMaxMultiplier;
     }
 
     /**
@@ -53,12 +57,6 @@ public class MinesGame implements Game {
 
     private void processField(GameField field) {
         if (field.isMine()) lost = true;
-        else multiplyBetByField(field);
-    }
-
-    private void multiplyBetByField(GameField field) {
-        BigDecimal fieldMultiplier = ((MultiplierField) field).multiplier;
-        bet = bet.multiply(fieldMultiplier, MATH_CONTEXT);
     }
 
     private boolean isFieldOpened(int width, int height) {
@@ -73,11 +71,11 @@ public class MinesGame implements Game {
         return Arrays.stream(openedFields).flatMap(Arrays::stream).allMatch(Objects::nonNull);
     }
 
-    public boolean isStarted() {
+    public boolean hasStarted() {
         return Arrays.stream(openedFields).anyMatch(Objects::nonNull);
     }
 
-    public boolean isWon() {
+    public boolean isWin() {
         return !lost;
     }
 
@@ -87,9 +85,9 @@ public class MinesGame implements Game {
     }
 
     private void generateFields() {
-        BigDecimal mineChance = BASE_MINE_CHANCE.multiply(multiplier, MATH_CONTEXT);
-        BigDecimal minMultiplier = BASE_MIN_MULTIPLIER.multiply(multiplier, MATH_CONTEXT);
-        BigDecimal maxMultiplier = BASE_MAX_MULTIPLIER.multiply(multiplier, MATH_CONTEXT);
+        BigDecimal mineChance = baseMineChance.multiply(multiplier, MATH_CONTEXT);
+        BigDecimal minMultiplier = baseMinMultiplier.multiply(multiplier, MATH_CONTEXT);
+        BigDecimal maxMultiplier = baseMaxMultiplier.multiply(multiplier, MATH_CONTEXT);
         fillFields(() -> {
             boolean isMine = mineChance.compareTo(BigDecimal.valueOf(Math.random())) >= 0;
             if (isMine) {
@@ -108,6 +106,14 @@ public class MinesGame implements Game {
                 fields[width][height] = function.get();
             }
         }
+    }
+
+    public record Config(
+            BigDecimal baseMineChance,
+            BigDecimal baseMinMultiplier,
+            BigDecimal baseMaxMultiplier,
+            Map<Game.Difficulty, BigDecimal> difficultyMultipliers
+    ) {
     }
 
     public sealed interface GameField {

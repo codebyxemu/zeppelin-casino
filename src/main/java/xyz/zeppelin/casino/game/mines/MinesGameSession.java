@@ -1,29 +1,29 @@
 package xyz.zeppelin.casino.game.mines;
 
-import com.google.common.base.Preconditions;
 import lombok.Getter;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-import xyz.zeppelin.casino.ZeppelinCasinoPlugin;
-import xyz.zeppelin.casino.bridge.EconomyBridge;
+import xyz.zeppelin.casino.component.ComponentManager;
+import xyz.zeppelin.casino.config.MainConfig;
+import xyz.zeppelin.casino.config.MessagesConfig;
+import xyz.zeppelin.casino.game.Game;
+import xyz.zeppelin.casino.game.PlayerBetManager;
 import xyz.zeppelin.casino.game.SinglePlayerGameSession;
-
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.util.Locale;
 
 @Getter
 public class MinesGameSession extends SinglePlayerGameSession<MinesGame> {
 
+    private final MessagesConfig messagesConfig;
+    private final MainConfig mainConfig;
     private final MinesGameController controller;
     private final MinesGameUserInterface userInterface;
-    private final Plugin plugin;
+    private final MinesGame game;
 
-    private MinesGameSession(Plugin plugin, Player player, int height, float multiplier, BigDecimal bet) {
-        super(new MinesGame(9, height, multiplier, bet), player);
-        this.plugin = plugin;
+    private MinesGameSession(PlayerBetManager betManager, Game.Difficulty difficulty) {
+        super(betManager);
+        this.mainConfig = ComponentManager.getComponentManager(plugin).getComponent(MainConfig.class);
+        this.game = new MinesGame(mainConfig.getMinesConfig(), difficulty, 4, 4);
+        this.messagesConfig = ComponentManager.getComponentManager(plugin).getComponent(MessagesConfig.class);
+        this.userInterface = new MinesGameUserInterface(this);
         this.controller = new MinesGameController(this);
-        this.userInterface = new MinesGameUserInterface(this, height);
     }
 
     @Override
@@ -38,46 +38,30 @@ public class MinesGameSession extends SinglePlayerGameSession<MinesGame> {
 
     void end() {
         state = State.Finished;
-        userInterface.close();
         controller.stop();
-        if (!game.isStarted()) {
+
+        if (!game.hasStarted()) {
             refund();
             return;
         }
-        if (game.isWon()) {
-            reward();
-        } else {
-            cheer();
-        }
+
+        if (game.isWin()) betManager.giveWinning();
+        openSummaryUI("Mines", game.isWin(), (betManager) -> start(betManager, game.getDifficulty()));
     }
 
     private void refund() {
-        // ToDo: Get the message from config
-        getPlayer().sendMessage("Game was not started, your bet was refunded.");
-        EconomyBridge economyBridge = ((ZeppelinCasinoPlugin) plugin).getEconomyBridge();
-        economyBridge.deposit(getPlayer(), game.getBet());
+        betManager.returnBet();
+        player.sendMessage(messagesConfig.getRefundMessage());
+
     }
 
-    private void reward() {
-        // ToDo: Get the message from config
-        String formattedAmount = DecimalFormat.getCurrencyInstance(Locale.US).format(game.getBet());
-        getPlayer().sendMessage("Congratulations, your win is " + formattedAmount + ", keep it up!");
+    public static void start(PlayerBetManager betManager, Game.Difficulty difficulty) {
+        boolean isBetPlaced = betManager.placeBet();
+        if (!isBetPlaced) {
+            MessagesConfig messagesConfig = ComponentManager.getComponentManager(betManager.getPlugin()).getComponent(MessagesConfig.class);
+            betManager.getPlayer().sendMessage(messagesConfig.getInsufficientBalanceToBet());
+            return;
+        }
+        new MinesGameSession(betManager, difficulty).start();
     }
-
-    private void cheer() {
-        // ToDo: Get the message from config
-        getPlayer().sendMessage("Unfortunately, you lost. Better luck next time!");
-    }
-
-    public static void start(Plugin plugin, Player player, BigDecimal bet, Difficulty difficulty) {
-        Preconditions.checkArgument(bet.compareTo(BigDecimal.ZERO) > 0, "Bet must be positive");
-        float multiplier = switch (difficulty) {
-            case EASY -> 1f;
-            case NORMAL -> 2f;
-            case HARD -> 3f;
-        };
-        new MinesGameSession(plugin, player, 6, multiplier, bet).start();
-    }
-
-    public enum Difficulty {EASY, NORMAL, HARD}
 }

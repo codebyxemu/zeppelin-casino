@@ -15,8 +15,11 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitTask;
+import xyz.zeppelin.casino.common.Environment;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Represents a user interface backed by an inventory.
@@ -25,9 +28,10 @@ public abstract class InventoryUserInterface implements InventoryHolder, Listene
 
     private final Integer inventorySize;
     private final Map<Integer, InventoryUserInterfaceItem> items = new HashMap<>();
+    private BukkitTask watcherTask;
     protected final Plugin plugin;
     protected boolean disablePlayerInventory = true;
-    protected boolean disableClose = false;
+    protected boolean autoUnregister = true;
     protected boolean disableDrag = true;
     protected Map<UUID, CloseReason> closeReasons = new HashMap<>();
     protected Set<Player> viewers = new HashSet<>();
@@ -45,10 +49,18 @@ public abstract class InventoryUserInterface implements InventoryHolder, Listene
 
     public void register() {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
+        if (Environment.isDevelopmentMode()) {
+            plugin.getLogger().info("Registered user interface " + this + ", starting watcher");
+            startWatcher();
+        }
     }
 
     public void unregister() {
         HandlerList.unregisterAll(this);
+        if (Environment.isDevelopmentMode()) {
+            plugin.getLogger().info("Unregistered user interface " + this + ", stopping watcher");
+            stopWatcher();
+        }
     }
 
     public void show(Player player) {
@@ -78,11 +90,17 @@ public abstract class InventoryUserInterface implements InventoryHolder, Listene
         render();
     }
 
+    public final void addItem(InventoryUserInterfaceItem item, int... slots) {
+        for (int slot : slots) {
+            addItem(slot, item);
+        }
+    }
+
     public final void addItem(int slot, InventoryUserInterfaceItem item) {
         items.put(slot, item);
     }
 
-    public final void render() {
+    public void render() {
         items.forEach((slot, item) -> inventory.setItem(slot, item.render()));
     }
 
@@ -125,16 +143,49 @@ public abstract class InventoryUserInterface implements InventoryHolder, Listene
         Player player = (Player) event.getPlayer();
         CloseReason reason = closeReasons.getOrDefault(player.getUniqueId(), CloseReason.Player);
         if (reason == CloseReason.Update) return;
-        if (reason == CloseReason.Plugin && disableClose) {
-            player.openInventory(inventory);
-            return;
+        boolean isAllowedToClose = onClose(event, reason);
+        if (isAllowedToClose) {
+            viewers.remove(player);
+            closeReasons.remove(player.getUniqueId());
+            if (viewers.isEmpty() && autoUnregister) {
+                unregister();
+                if (Environment.isDevelopmentMode()) {
+                    plugin.getLogger().info("Unregistered " + this + " because no viewers are left");
+                }
+            }
+        } else {
+            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> show(player));
         }
-        onClose(event, reason);
-        viewers.remove(player);
     }
 
-    protected void onClose(InventoryCloseEvent event, CloseReason reason) {
-        // Do nothing by default for convenience
+    private void startWatcher() {
+        AtomicInteger noViewersTicks = new AtomicInteger();
+        watcherTask = plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
+            if (viewers.isEmpty()) {
+                noViewersTicks.addAndGet(1);
+            } else {
+                noViewersTicks.set(0);
+            }
+            if (noViewersTicks.get() > 0 && noViewersTicks.get() % 1200 == 0) {
+                int seconds = noViewersTicks.get() / 60;
+                plugin.getLogger().warning("User interface " + this + " has been open for " + seconds + " seconds without any viewers, possibly a memory leak!");
+            }
+        }, 0, 1);
+    }
+
+    private void stopWatcher() {
+        if (watcherTask != null) watcherTask.cancel();
+    }
+
+    /**
+     * Called when the inventory is closed.
+     *
+     * @param event  the event
+     * @param reason the reason
+     * @return true if the inventory should be closed, false otherwise
+     */
+    protected boolean onClose(InventoryCloseEvent event, CloseReason reason) {
+        return true;
     }
 
     protected final boolean isThis(Inventory inventory) {

@@ -5,9 +5,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import xyz.zeppelin.casino.ui.InventoryUserInterfaceItem;
-import xyz.zeppelin.casino.util.Utils;
 
-import java.text.DecimalFormat;
+import java.math.MathContext;
 import java.util.List;
 import java.util.Objects;
 
@@ -52,9 +51,8 @@ public class GameFieldUserInterfaceItem implements InventoryUserInterfaceItem {
     private ItemStack renderMultiplier(MinesGame.MultiplierField field) {
         ItemStack itemStack = new ItemStack(Material.DIAMOND);
         ItemMeta itemMeta = Objects.requireNonNull(itemStack.getItemMeta());
-        String formattedMultiplier = DecimalFormat.getNumberInstance().format(field.multiplier().round(Utils.MATH_CONTEXT_TWO_DECIMALS));
-        itemMeta.setDisplayName("Multiplier " + formattedMultiplier);
-        itemMeta.setLore(List.of("You won " + formattedMultiplier + "x your bet!"));
+        itemMeta.setDisplayName("Multiplier %.2f".formatted(field.multiplier()));
+        itemMeta.setLore(List.of("You won %.2fx your bet!".formatted(field.multiplier())));
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }
@@ -70,4 +68,6 @@ public class GameFieldUserInterfaceItem implements InventoryUserInterfaceItem {
             return false;
         }
     }
+
+    private static final MathContext MATH_CONTEXT_TWO_DIGITS = new MathContext(2);
 }

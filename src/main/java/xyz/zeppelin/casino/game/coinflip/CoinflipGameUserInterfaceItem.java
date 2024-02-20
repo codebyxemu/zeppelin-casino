@@ -1,4 +1,4 @@
-package xyz.zeppelin.casino.game.mines;
+package xyz.zeppelin.casino.game.coinflip;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -10,7 +10,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import xyz.zeppelin.casino.component.ComponentManager;
 import xyz.zeppelin.casino.config.MessagesConfig;
-import xyz.zeppelin.casino.game.Game;
 import xyz.zeppelin.casino.game.PlayerBetManager;
 import xyz.zeppelin.casino.ui.GamePreferencesUserInterface;
 import xyz.zeppelin.casino.ui.InventoryUserInterfaceItem;
@@ -19,30 +18,27 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 
-public class MinesGameUserInterfaceItem implements InventoryUserInterfaceItem {
+public class CoinflipGameUserInterfaceItem implements InventoryUserInterfaceItem {
 
     private final Plugin plugin;
     private final MessagesConfig messagesConfig;
 
-    public MinesGameUserInterfaceItem(Plugin plugin) {
+    public CoinflipGameUserInterfaceItem(Plugin plugin) {
         this.plugin = plugin;
         this.messagesConfig = ComponentManager.getComponentManager(plugin).getComponent(MessagesConfig.class);
     }
 
     @Override
     public ItemStack render() {
-        ItemStack item = new ItemStack(Material.TNT);
+        ItemStack item = new ItemStack(Material.SUNFLOWER);
         ItemMeta meta = Objects.requireNonNull(item.getItemMeta());
         meta.addEnchant(Enchantment.DURABILITY, 1, true);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        meta.setDisplayName("§c§lMines");
+        meta.setDisplayName("§c§lCoinFlip");
         meta.setLore(List.of(
-                "§eFeatured Game",
-                "",
-                "§7Classic mines game, open tiles to find a multiplier... or a mine!",
+                "§7Classic coin flip game, pick a side and flip the coin!",
                 "",
                 "§7Minimum Bet: §a$10 §7– Maximum Bet: §a$5000",
-                "§7Difficulty: §aEasy, §eMedium, §cHard",
                 "",
                 "§eClick to play!"
         ));
@@ -54,11 +50,11 @@ public class MinesGameUserInterfaceItem implements InventoryUserInterfaceItem {
     public boolean onClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
         GamePreferencesUserInterface.GamePreferencesPreset preset = new GamePreferencesUserInterface.GamePreferencesPreset(
-                Game.Difficulty.EASY,
+                null,
                 null,
                 this::validateBet,
                 (difficulty) -> null,
-                (betAmount, difficulty) -> startGame(player, betAmount, difficulty)
+                (betAmount, difficulty) -> startGame(player, betAmount)
         );
         GamePreferencesUserInterface.open(plugin, player, preset);
         return false;
@@ -74,8 +70,8 @@ public class MinesGameUserInterfaceItem implements InventoryUserInterfaceItem {
         return null;
     }
 
-    private void startGame(Player player, BigDecimal betAmount, Game.Difficulty difficulty) {
+    private void startGame(Player player, BigDecimal betAmount) {
         PlayerBetManager betManager = new PlayerBetManager(plugin, player, betAmount);
-        MinesGameSession.start(betManager, difficulty);
+        CoinflipGameSession.start(betManager);
     }
 }
