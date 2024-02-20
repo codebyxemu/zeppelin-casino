@@ -24,7 +24,7 @@ dependencies {
     // CommandAPI
     implementation("dev.jorel", "commandapi-bukkit-shade", "9.3.0")
     // Java
-    implementation("org.projectlombok", "lombok", "1.18.30")
+    compileOnly("org.projectlombok", "lombok", "1.18.30")
     annotationProcessor("org.projectlombok", "lombok", "1.18.30")
     // Bstats
     implementation("org.bstats", "bstats-bukkit", "3.0.2")
@@ -52,7 +52,8 @@ tasks {
     create<ShadowJar>("productionJar") {
         group = "build"
 
-        from(sourceSets.main.get().output)
+        from(sourceSets.main.get().runtimeClasspath)
+        archiveFileName = "production-${version}.jar"
 
         // Relocate some dependencies to avoid conflicts with other plugins
         relocate("dev.jorel.commandapi", "xyz.zeppelin.casino.commandapi")
