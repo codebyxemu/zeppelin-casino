@@ -51,6 +51,6 @@ public class WheelGame implements Game {
         return hasStarted() && getPosition().compareTo(BigDecimal.ZERO) > 0;
     }
 
-    public record Config(List<BigDecimal> items) {
+    public record Config(List<BigDecimal> items, BigDecimal maxBet, BigDecimal minBet) {
     }
 }

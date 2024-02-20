@@ -1,4 +1,9 @@
+coinflip:
+  min-bet: 10
+  max-bet: 10000
 mines:
+  min-bet: 10
+  max-bet: 10000
   base-mine-chance: 0.2
   base-min-multiplier: 0.05
   base-max-multiplier: 0.15
@@ -7,10 +12,14 @@ mines:
     normal: 1.0
     hard: 1.5
 crash:
+  min-bet: 10
+  max-bet: 10000
   max-multiplier: 100.0
   base-multiplier: 0.01
   crash-chance: 0.01
 wheel:
+  min-bet: 10
+  max-bet: 10000
   items: [
     0.1, 0, 0, 0.5, 0, 0, 0, 1, 2, 0, 0.1, 0, 5, 0, 0.1, 0, 0, 0.2, 0, 0, 0.1, 0, 0, 10, 0, 0, 0.1, 0, 0,
     0.1, 0, 0, 0, 0, 0.2, 0.2, 0, 0.3, 0, 0, 0.1, 0, 0, 25, 0.1, 0, 0, 0, 0, 0, 0.1, 0, 0, 0.1, 0, 0, 0.1,
@@ -18,6 +27,8 @@ wheel:
     100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.1, 0, 0, 0, 0, 0, 0, 0, 0, 0.1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.1, 0,
   ]
 slots:
+  min-bet: 10
+  max-bet: 10000
   items:
     emerald:
       chance: 0.01

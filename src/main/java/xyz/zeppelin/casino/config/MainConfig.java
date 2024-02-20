@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 import xyz.zeppelin.casino.game.Game;
+import xyz.zeppelin.casino.game.coinflip.CoinflipGame;
 import xyz.zeppelin.casino.game.crash.CrashGame;
 import xyz.zeppelin.casino.game.mines.MinesGame;
 import xyz.zeppelin.casino.game.slots.SlotsGame;
@@ -22,6 +23,13 @@ public class MainConfig extends BaseConfig {
         super(file, defaultName, logger);
     }
 
+    public CoinflipGame.Config getCoinflipConfig() {
+        ConfigurationSection gameSection = Objects.requireNonNull(configuration.getConfigurationSection("coinflip"));
+        BigDecimal maxBet = new BigDecimal(Objects.requireNonNull(gameSection.getString("max-bet")));
+        BigDecimal minBet = new BigDecimal(Objects.requireNonNull(gameSection.getString("min-bet")));
+        return new CoinflipGame.Config(maxBet, minBet);
+    }
+
     public SlotsGame.Config getSlotsConfig() {
         ConfigurationSection gameSection = Objects.requireNonNull(configuration.getConfigurationSection("slots"));
         ConfigurationSection itemsSection = Objects.requireNonNull(gameSection.getConfigurationSection("items"));
@@ -32,12 +40,16 @@ public class MainConfig extends BaseConfig {
             BigDecimal multiplier = new BigDecimal(Objects.requireNonNull(section.getString("multiplier")));
             return new SlotsGame.SlotConfig(material, chance, multiplier);
         }).toList();
-        return new SlotsGame.Config(slotsConfig);
+        BigDecimal maxBet = new BigDecimal(Objects.requireNonNull(gameSection.getString("max-bet")));
+        BigDecimal minBet = new BigDecimal(Objects.requireNonNull(gameSection.getString("min-bet")));
+        return new SlotsGame.Config(slotsConfig, maxBet, minBet);
     }
 
     public WheelGame.Config getWheelConfig() {
         ConfigurationSection gameSection = Objects.requireNonNull(configuration.getConfigurationSection("wheel"));
-        return new WheelGame.Config(gameSection.getStringList("items").stream().map(BigDecimal::new).toList());
+        BigDecimal maxBet = new BigDecimal(Objects.requireNonNull(gameSection.getString("max-bet")));
+        BigDecimal minBet = new BigDecimal(Objects.requireNonNull(gameSection.getString("min-bet")));
+        return new WheelGame.Config(gameSection.getStringList("items").stream().map(BigDecimal::new).toList(), maxBet, minBet);
     }
 
     public CrashGame.Config getCrashConfig() {
@@ -45,7 +57,9 @@ public class MainConfig extends BaseConfig {
         BigDecimal maxMultiplier = new BigDecimal(Objects.requireNonNull(gameSection.getString("max-multiplier")));
         BigDecimal baseMultiplier = new BigDecimal(Objects.requireNonNull(gameSection.getString("base-multiplier")));
         BigDecimal crashChance = new BigDecimal(Objects.requireNonNull(gameSection.getString("crash-chance")));
-        return new CrashGame.Config(maxMultiplier, baseMultiplier, crashChance);
+        BigDecimal maxBet = new BigDecimal(Objects.requireNonNull(gameSection.getString("max-bet")));
+        BigDecimal minBet = new BigDecimal(Objects.requireNonNull(gameSection.getString("min-bet")));
+        return new CrashGame.Config(maxMultiplier, baseMultiplier, crashChance, maxBet, minBet);
     }
 
     public MinesGame.Config getMinesConfig() {
@@ -59,7 +73,9 @@ public class MainConfig extends BaseConfig {
                 Game.Difficulty.NORMAL, new BigDecimal(Objects.requireNonNull(difficultySection.getString("normal"))),
                 Game.Difficulty.HARD, new BigDecimal(Objects.requireNonNull(difficultySection.getString("hard")))
         );
-        return new MinesGame.Config(baseMineChance, baseMinMultiplier, baseMaxMultiplier, difficultyMultipliers);
+        BigDecimal maxBet = new BigDecimal(Objects.requireNonNull(gameSection.getString("max-bet")));
+        BigDecimal minBet = new BigDecimal(Objects.requireNonNull(gameSection.getString("min-bet")));
+        return new MinesGame.Config(baseMineChance, baseMinMultiplier, baseMaxMultiplier, difficultyMultipliers, maxBet, minBet);
     }
 
     public static MainConfig createDefault(Plugin plugin) {

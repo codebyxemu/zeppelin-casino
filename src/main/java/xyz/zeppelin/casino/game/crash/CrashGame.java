@@ -47,6 +47,12 @@ public class CrashGame implements Game {
         return crashed;
     }
 
-    public record Config(BigDecimal maxMultiplier, BigDecimal baseMultiplier, BigDecimal crashChance) {
+    public record Config(
+            BigDecimal maxMultiplier,
+            BigDecimal baseMultiplier,
+            BigDecimal crashChance,
+            BigDecimal maxBet,
+            BigDecimal minBet
+    ) {
     }
 }

@@ -112,7 +112,9 @@ public class MinesGame implements Game {
             BigDecimal baseMineChance,
             BigDecimal baseMinMultiplier,
             BigDecimal baseMaxMultiplier,
-            Map<Game.Difficulty, BigDecimal> difficultyMultipliers
+            Map<Game.Difficulty, BigDecimal> difficultyMultipliers,
+            BigDecimal maxBet,
+            BigDecimal minBet
     ) {
     }
 

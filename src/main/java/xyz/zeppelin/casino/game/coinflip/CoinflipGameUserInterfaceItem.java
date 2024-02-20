@@ -9,27 +9,38 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import xyz.zeppelin.casino.component.ComponentManager;
+import xyz.zeppelin.casino.config.MainConfig;
 import xyz.zeppelin.casino.config.MessagesConfig;
 import xyz.zeppelin.casino.game.PlayerBetManager;
 import xyz.zeppelin.casino.ui.GamePreferencesUserInterface;
 import xyz.zeppelin.casino.ui.InventoryUserInterfaceItem;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 public class CoinflipGameUserInterfaceItem implements InventoryUserInterfaceItem {
 
     private final Plugin plugin;
     private final MessagesConfig messagesConfig;
+    private final BigDecimal maxBet;
+    private final BigDecimal minBet;
 
     public CoinflipGameUserInterfaceItem(Plugin plugin) {
         this.plugin = plugin;
         this.messagesConfig = ComponentManager.getComponentManager(plugin).getComponent(MessagesConfig.class);
+        MainConfig mainConfig = ComponentManager.getComponentManager(plugin).getComponent(MainConfig.class);
+        CoinflipGame.Config config = mainConfig.getCoinflipConfig();
+        this.maxBet = config.maxBet();
+        this.minBet = config.minBet();
     }
 
     @Override
     public ItemStack render() {
+        String minBetFormatted = DecimalFormat.getCurrencyInstance(Locale.US).format(minBet);
+        String maxBetFormatted = DecimalFormat.getCurrencyInstance(Locale.US).format(maxBet);
         ItemStack item = new ItemStack(Material.SUNFLOWER);
         ItemMeta meta = Objects.requireNonNull(item.getItemMeta());
         meta.addEnchant(Enchantment.DURABILITY, 1, true);
@@ -38,7 +49,7 @@ public class CoinflipGameUserInterfaceItem implements InventoryUserInterfaceItem
         meta.setLore(List.of(
                 "§7Classic coin flip game, pick a side and flip the coin!",
                 "",
-                "§7Minimum Bet: §a$10 §7– Maximum Bet: §a$5000",
+                "§7Minimum Bet: §a%s §7– Maximum Bet: §a%s".formatted(minBetFormatted, maxBetFormatted),
                 "",
                 "§eClick to play!"
         ));
@@ -61,10 +72,10 @@ public class CoinflipGameUserInterfaceItem implements InventoryUserInterfaceItem
     }
 
     private String validateBet(BigDecimal betAmount) {
-        if (betAmount.compareTo(BigDecimal.valueOf(10)) < 0) {
+        if (betAmount.compareTo(minBet) < 0) {
             return messagesConfig.getBetCanNotBeLowerThanMinimum();
         }
-        if (betAmount.compareTo(BigDecimal.valueOf(5000)) > 0) {
+        if (betAmount.compareTo(maxBet) > 0) {
             return messagesConfig.getBetCanNotBeHigherThanMaximum();
         }
         return null;

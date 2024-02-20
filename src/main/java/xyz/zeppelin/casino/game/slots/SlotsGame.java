@@ -74,7 +74,7 @@ public class SlotsGame implements Game {
         return randomSlot;
     }
 
-    public record Config(List<SlotConfig> items) {
+    public record Config(List<SlotConfig> items, BigDecimal maxBet, BigDecimal minBet) {
     }
 
     public record Slot(Material material, BigDecimal multiplier) {

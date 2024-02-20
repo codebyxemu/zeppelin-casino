@@ -29,4 +29,7 @@ public class CoinflipGame implements Game {
     }
 
     enum Side {HEADS, TAILS}
+
+    public record Config(BigDecimal maxBet, BigDecimal minBet) {
+    }
 }
