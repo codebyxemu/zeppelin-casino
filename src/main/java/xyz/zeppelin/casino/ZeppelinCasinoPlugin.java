@@ -39,9 +39,10 @@ public class ZeppelinCasinoPlugin extends JavaPlugin {
         componentManager.enableComponents();
 
         if (authenticate()) {
-            Bukkit.getLogger().info("License validated. Resuming boot!");
+            Bukkit.getLogger().info("[ZeppelinCasino] Your license was confirmed. Thanks for your purchase!");
         } else {
-            Bukkit.getLogger().warning("You do not have a valid license for Zeppelin Casino. The plugin will shut down now.");
+            Bukkit.getLogger().warning("[ZeppelinCasino] You do not have a valid license for Zeppelin Casino. " +
+                    "The plugin will shut down now. You can receive a license in our Discord server.");
             getServer().getPluginManager().disablePlugin(this);
         }
     }
