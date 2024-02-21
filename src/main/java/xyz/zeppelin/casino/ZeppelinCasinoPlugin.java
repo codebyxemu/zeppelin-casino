@@ -54,6 +54,7 @@ public class ZeppelinCasinoPlugin extends JavaPlugin {
     }
 
     private boolean authenticate() {
+        getLogger().info("[ZeppelinCasino] Loading Licensing System...");
 
         String licenseKey = ComponentManager.getComponentManager(this).getComponent(MainConfig.class).getLicenseKey();
 
