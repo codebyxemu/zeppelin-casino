@@ -15,6 +15,7 @@ repositories {
     maven("https://oss.sonatype.org/content/groups/public/")  // Sonatype
     maven("https://s01.oss.sonatype.org/content/repositories/snapshots/") // Sonatype Snapshots
     maven("https://jitpack.io") // Jitpack
+    maven("https://repo.demeng.dev/releases") // Sentinel licensing
 }
 
 dependencies {
@@ -28,6 +29,12 @@ dependencies {
     annotationProcessor("org.projectlombok", "lombok", "1.18.30")
     // Bstats
     implementation("org.bstats", "bstats-bukkit", "3.0.2")
+
+    // Sentinel Licensing
+    implementation ("dev.demeng:sentinel-java-wrapper:1.2.0") {
+        // Exclude GSON if it's already available
+        exclude(group = "com.google.code.gson", module = "gson")
+    }
 }
 
 java {

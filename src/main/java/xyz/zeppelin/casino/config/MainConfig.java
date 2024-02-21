@@ -23,6 +23,10 @@ public class MainConfig extends BaseConfig {
         super(file, defaultName, logger);
     }
 
+    public String getLicenseKey() {
+        return Objects.requireNonNull(configuration.getString("license-key"));
+    }
+
     public CoinflipGame.Config getCoinflipConfig() {
         ConfigurationSection gameSection = Objects.requireNonNull(configuration.getConfigurationSection("coinflip"));
         BigDecimal maxBet = new BigDecimal(Objects.requireNonNull(gameSection.getString("max-bet")));

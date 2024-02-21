@@ -1,3 +1,5 @@
+license-key: ""
+
 coinflip:
   min-bet: 10
   max-bet: 10000
