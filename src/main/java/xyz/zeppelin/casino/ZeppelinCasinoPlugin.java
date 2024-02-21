@@ -36,6 +36,7 @@ public class ZeppelinCasinoPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        componentManager.enableComponents();
 
         if (authenticate()) {
             Bukkit.getLogger().info("License validated. Resuming boot!");
@@ -43,8 +44,6 @@ public class ZeppelinCasinoPlugin extends JavaPlugin {
             Bukkit.getLogger().warning("You do not have a valid license for Zeppelin Casino. The plugin will shut down now.");
             getServer().getPluginManager().disablePlugin(this);
         }
-
-        componentManager.enableComponents();
     }
 
 
