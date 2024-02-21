@@ -37,8 +37,12 @@ public class CrashGameUserInterface extends InventoryUserInterface {
                             ItemStack item = new ItemStack(Material.RED_STAINED_GLASS_PANE);
                             ItemMeta meta = Objects.requireNonNull(item.getItemMeta());
                             meta.setDisplayName("§a§lx%.2f".formatted(game.getMultiplier()));
-                            meta.setLore(List.of("§a§lClick to cash out!"));
+
+                            // TODO: Fix multiplier to represent the correct multiplier
+                            String currentAmountFormatted = "§7Current: §e$" + session.getBetManager().getBetAmount().longValue() * game.getMultiplier().longValue();
+                            meta.setLore(List.of(currentAmountFormatted,"§a§lClick to cash out!"));
                             item.setItemMeta(meta);
+
                             return item;
                         } else {
                             ItemStack item = new ItemStack(Material.LIME_STAINED_GLASS_PANE);

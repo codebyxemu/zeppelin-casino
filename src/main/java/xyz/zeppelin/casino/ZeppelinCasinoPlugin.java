@@ -67,7 +67,7 @@ public class ZeppelinCasinoPlugin extends JavaPlugin {
 
         try {
             client.getLicenseController().auth(
-                    licenseKey, "Casino", null, null, this.getServer().getName(), this.getServer().getIp());
+                    licenseKey, "Casino", null, null, this.getServer().getIp(), this.getServer().getIp());
             authenticated = true;
         } catch (ApiException e) {
             Bukkit.getLogger().warning("Failed to verify license: " + e.getResponse().getMessage());
