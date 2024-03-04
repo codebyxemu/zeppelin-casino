@@ -14,6 +14,7 @@ public class CasinoCommand extends CommandComponent {
     @Override
     public CommandAPICommand createCommand() {
         return new CommandAPICommand("casino")
+                .withAliases("zeppelin-casino")
                 .executesPlayer((sender, args) -> {
                     CasinoUserInterface.open(plugin, sender);
                 });
