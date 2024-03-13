@@ -1,5 +1,6 @@
 package xyz.zeppelin.casino.game.wheel;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -45,7 +46,7 @@ public class WheelGameUserInterfaceItem implements InventoryUserInterfaceItem {
         ItemMeta meta = Objects.requireNonNull(item.getItemMeta());
         meta.addEnchant(Enchantment.DURABILITY, 1, true);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        meta.setDisplayName("§c§lWheel of Fortune");
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&c&lWheel of Fortune"));
         meta.setLore(List.of(
                 "§7Spin the wheel to try out your fortune!",
                 "",
@@ -84,5 +85,16 @@ public class WheelGameUserInterfaceItem implements InventoryUserInterfaceItem {
     private void startGame(Player player, BigDecimal betAmount) {
         PlayerBetManager betManager = new PlayerBetManager(plugin, player, betAmount);
         WheelGameSession.start(betManager);
+    }
+
+    public void quickOpen(Player player) {
+        GamePreferencesUserInterface.GamePreferencesPreset preset = new GamePreferencesUserInterface.GamePreferencesPreset(
+                null,
+                null,
+                this::validateBet,
+                (difficulty) -> null,
+                (betAmount, difficulty) -> startGame(player, betAmount)
+        );
+        GamePreferencesUserInterface.open(plugin, player, preset);
     }
 }

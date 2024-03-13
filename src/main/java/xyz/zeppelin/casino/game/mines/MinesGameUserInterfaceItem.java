@@ -89,4 +89,15 @@ public class MinesGameUserInterfaceItem implements InventoryUserInterfaceItem {
         PlayerBetManager betManager = new PlayerBetManager(plugin, player, betAmount);
         MinesGameSession.start(betManager, difficulty);
     }
+
+    public void quickOpen(Player player) {
+        GamePreferencesUserInterface.GamePreferencesPreset preset = new GamePreferencesUserInterface.GamePreferencesPreset(
+                Game.Difficulty.EASY,
+                null,
+                this::validateBet,
+                (difficulty) -> null,
+                (betAmount, difficulty) -> startGame(player, betAmount, difficulty)
+        );
+        GamePreferencesUserInterface.open(plugin, player, preset);
+    }
 }

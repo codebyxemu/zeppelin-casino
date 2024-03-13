@@ -12,6 +12,8 @@ import xyz.zeppelin.casino.bridge.EconomyBridge;
 import xyz.zeppelin.casino.component.ComponentManager;
 import xyz.zeppelin.casino.config.MessagesConfig;
 import xyz.zeppelin.casino.game.Game;
+import xyz.zeppelin.casino.message.Message;
+import xyz.zeppelin.casino.message.MessageList;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -61,14 +63,14 @@ public class GamePreferencesUserInterface extends InventoryUserInterface {
                         if (betAmount != null) {
                             ItemStack playItem = new ItemStack(Material.EMERALD_BLOCK, 1);
                             ItemMeta playMeta = Objects.requireNonNull(playItem.getItemMeta());
-                            playMeta.setDisplayName("§b§lPlay");
+                            playMeta.setDisplayName(new Message("&b&lPlay").colorize().getMessage());
                             playItem.setItemMeta(playMeta);
                             return playItem;
                         } else {
                             ItemStack blockItem = new ItemStack(Material.REDSTONE_BLOCK, 1);
                             ItemMeta blockMeta = Objects.requireNonNull(blockItem.getItemMeta());
-                            blockMeta.setDisplayName("§c§lPlay");
-                            blockMeta.setLore(List.of("§7You must set a bet amount to play."));
+                            blockMeta.setDisplayName(new Message("&c&lPlay").colorize().getMessage());
+                            blockMeta.setLore(new MessageList(List.of("&7You must set a bet amount to play.")).colorize().getMessages());
                             blockItem.setItemMeta(blockMeta);
                             return blockItem;
                         }
@@ -92,14 +94,14 @@ public class GamePreferencesUserInterface extends InventoryUserInterface {
             public ItemStack render() {
                 ItemStack setBetItem = new ItemStack(Material.DIAMOND, 1);
                 ItemMeta setBetMeta = Objects.requireNonNull(setBetItem.getItemMeta());
-                setBetMeta.setDisplayName("§b§lSet Bet Amount");
+                setBetMeta.setDisplayName(new Message("&b&lSet Bet Amount").colorize().getMessage());
                 String formattedBetAmount;
                 if (betAmount != null) {
                     formattedBetAmount = DecimalFormat.getCurrencyInstance(Locale.US).format(betAmount);
                 } else {
-                    formattedBetAmount = "§7Not set";
+                    formattedBetAmount = new Message("&7Not set").colorize().getMessage();
                 }
-                setBetMeta.setLore(List.of("§7Current: §f" + formattedBetAmount));
+                setBetMeta.setLore(new MessageList(List.of("§7Current: §f" + formattedBetAmount)).colorize().getMessages());
                 setBetItem.setItemMeta(setBetMeta);
                 return setBetItem;
             }
@@ -144,8 +146,8 @@ public class GamePreferencesUserInterface extends InventoryUserInterface {
                 createSetDifficultyItem(
                         Game.Difficulty.EASY,
                         Material.LIME_STAINED_GLASS_PANE,
-                        "§a§lEASY",
-                        List.of("§7For the low ballers that want to earn some small cash.")
+                        new Message("&e&lEASY").colorize().getMessage(),
+                        new MessageList(List.of("&7For the low ballers that want to earn some small cash.")).colorize().getMessages()
                 )
         );
         addItem(
@@ -153,8 +155,8 @@ public class GamePreferencesUserInterface extends InventoryUserInterface {
                 createSetDifficultyItem(
                         Game.Difficulty.NORMAL,
                         Material.YELLOW_STAINED_GLASS_PANE,
-                        "§e§lNORMAL",
-                        List.of("§7For the average players that want to earn some cash.")
+                        new Message("&e&lNORMAL").colorize().getMessage(),
+                        new MessageList(List.of("&7For the average players that want to earn some cash.")).colorize().getMessages()
                 )
         );
         addItem(
@@ -162,8 +164,8 @@ public class GamePreferencesUserInterface extends InventoryUserInterface {
                 createSetDifficultyItem(
                         Game.Difficulty.HARD,
                         Material.RED_STAINED_GLASS_PANE,
-                        "§c§lHARD",
-                        List.of("§7For the high rollers that want to earn some big cash.")
+                        new Message("&c&lHARD").colorize().getMessage(),
+                        new MessageList(List.of("§7For the high rollers that want to earn some big cash.")).colorize().getMessages()
                 )
         );
     }
@@ -202,7 +204,7 @@ public class GamePreferencesUserInterface extends InventoryUserInterface {
     private void addBack() {
         ItemStack backItem = new ItemStack(Material.ARROW, 1);
         ItemMeta backMeta = Objects.requireNonNull(backItem.getItemMeta());
-        backMeta.setDisplayName("§c§lBack");
+        backMeta.setDisplayName(new Message("&c&lBACK").colorize().getMessage());
         backItem.setItemMeta(backMeta);
         InventoryUserInterfaceItem back = InventoryUserInterfaceItem.staticItem(backItem, event -> {
             plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
@@ -216,8 +218,8 @@ public class GamePreferencesUserInterface extends InventoryUserInterface {
     private void addInfo() {
         ItemStack infoItem = new ItemStack(Material.PAPER, 1);
         ItemMeta infoMeta = Objects.requireNonNull(infoItem.getItemMeta());
-        infoMeta.setDisplayName("§6§lInformation");
-        infoMeta.setLore(List.of("§7Here you can change your game preferences."));
+        infoMeta.setDisplayName(new Message("&6&lInformation").colorize().getMessage());
+        infoMeta.setLore(new MessageList(List.of("&7Here you can change your game preferences.")).colorize().getMessages());
         infoItem.setItemMeta(infoMeta);
         InventoryUserInterfaceItem info = InventoryUserInterfaceItem.staticItem(infoItem);
         addItem(10, info);

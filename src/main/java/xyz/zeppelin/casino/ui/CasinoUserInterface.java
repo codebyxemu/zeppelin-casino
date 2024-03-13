@@ -22,6 +22,7 @@ public class CasinoUserInterface extends InventoryUserInterface {
 
     private void addItems() {
         addCosmeticItems();
+
         addItem(20, new CrashGameUserInterfaceItem(plugin));
         addItem(21, new WheelGameUserInterfaceItem(plugin));
         addItem(22, new MinesGameUserInterfaceItem(plugin));

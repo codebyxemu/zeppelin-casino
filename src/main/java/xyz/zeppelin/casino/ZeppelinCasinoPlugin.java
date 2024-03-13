@@ -57,6 +57,7 @@ public class ZeppelinCasinoPlugin extends JavaPlugin {
         getLogger().info("[ZeppelinCasino] Loading Licensing System...");
 
         String licenseKey = ComponentManager.getComponentManager(this).getComponent(MainConfig.class).getLicenseKey();
+        String serverName = ComponentManager.getComponentManager(this).getComponent(MainConfig.class).getServerName();
 
         SentinelClient client = new SentinelClient(
                 "http://193.31.31.184:25206/api/v1",
@@ -67,7 +68,7 @@ public class ZeppelinCasinoPlugin extends JavaPlugin {
 
         try {
             client.getLicenseController().auth(
-                    licenseKey, "Casino", null, null, this.getServer().getIp(), this.getServer().getIp());
+                    licenseKey, "Casino", null, null, serverName, this.getServer().getIp().toString());
             authenticated = true;
         } catch (ApiException e) {
             Bukkit.getLogger().warning("Failed to verify license: " + e.getResponse().getMessage());

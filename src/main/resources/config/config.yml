@@ -1,4 +1,9 @@
-license-key: ""
+# Configure License Key
+license:
+  # The server name is recommended if you run the license key on multiple servers. Should be unique.
+  server-name: ""
+  # License key can be obtained by contacting Xemu on Discord (@xemuu) or sending a message on BuiltByBit: @Xemu
+  license-key: ""
 
 coinflip:
   min-bet: 10

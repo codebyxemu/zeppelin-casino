@@ -85,4 +85,15 @@ public class SlotsGameUserInterfaceItem implements InventoryUserInterfaceItem {
         PlayerBetManager betManager = new PlayerBetManager(plugin, player, betAmount);
         SlotsGameSession.start(betManager);
     }
+
+    public void quickOpen(Player player) {
+        GamePreferencesUserInterface.GamePreferencesPreset preset = new GamePreferencesUserInterface.GamePreferencesPreset(
+                null,
+                null,
+                this::validateBet,
+                (difficulty) -> null,
+                (betAmount, difficulty) -> startGame(player, betAmount)
+        );
+        GamePreferencesUserInterface.open(plugin, player, preset);
+    }
 }

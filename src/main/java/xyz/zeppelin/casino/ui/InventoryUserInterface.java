@@ -26,6 +26,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public abstract class InventoryUserInterface implements InventoryHolder, Listener {
 
+
     private final Integer inventorySize;
     private final Map<Integer, InventoryUserInterfaceItem> items = new HashMap<>();
     private BukkitTask watcherTask;

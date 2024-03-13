@@ -23,8 +23,12 @@ public class MainConfig extends BaseConfig {
         super(file, defaultName, logger);
     }
 
+    public String getServerName() {
+        return Objects.requireNonNull(configuration.getString("license.server-name"));
+    }
+
     public String getLicenseKey() {
-        return Objects.requireNonNull(configuration.getString("license-key"));
+        return Objects.requireNonNull(configuration.getString("license.license-key"));
     }
 
     public CoinflipGame.Config getCoinflipConfig() {

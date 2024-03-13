@@ -23,3 +23,6 @@ public abstract class CommandComponent extends BasePluginComponent {
         command.register();
     }
 }
+
+
+
