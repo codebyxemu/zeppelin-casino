@@ -12,6 +12,8 @@ import xyz.zeppelin.casino.component.ComponentManager;
 import xyz.zeppelin.casino.config.MainConfig;
 import xyz.zeppelin.casino.config.MessagesConfig;
 import xyz.zeppelin.casino.game.PlayerBetManager;
+import xyz.zeppelin.casino.message.Message;
+import xyz.zeppelin.casino.message.MessageList;
 import xyz.zeppelin.casino.ui.GamePreferencesUserInterface;
 import xyz.zeppelin.casino.ui.InventoryUserInterfaceItem;
 
@@ -45,14 +47,14 @@ public class CoinflipGameUserInterfaceItem implements InventoryUserInterfaceItem
         ItemMeta meta = Objects.requireNonNull(item.getItemMeta());
         meta.addEnchant(Enchantment.DURABILITY, 1, true);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        meta.setDisplayName("§c§lCoinFlip");
-        meta.setLore(List.of(
-                "§7Classic coin flip game, pick a side and flip the coin!",
+        meta.setDisplayName(new Message("&c&lCoinFlip").colorize().getMessage());
+        meta.setLore(new MessageList(List.of(
+                "&7Classic coin flip game, pick a side and flip the coin!",
                 "",
-                "§7Minimum Bet: §a%s §7– Maximum Bet: §a%s".formatted(minBetFormatted, maxBetFormatted),
+                "&7Minimum Bet: &a%s &7– Maximum Bet: &a%s".formatted(minBetFormatted, maxBetFormatted),
                 "",
-                "§eClick to play!"
-        ));
+                "&eClick to play!"
+        )).colorize().getMessages());
         item.setItemMeta(meta);
         return item;
     }

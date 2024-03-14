@@ -5,6 +5,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import xyz.zeppelin.casino.message.Message;
+import xyz.zeppelin.casino.message.MessageList;
 import xyz.zeppelin.casino.ui.InventoryUserInterface;
 import xyz.zeppelin.casino.ui.InventoryUserInterfaceItem;
 
@@ -36,19 +38,17 @@ public class CrashGameUserInterface extends InventoryUserInterface {
                         if (game.hasStarted()) {
                             ItemStack item = new ItemStack(Material.RED_STAINED_GLASS_PANE);
                             ItemMeta meta = Objects.requireNonNull(item.getItemMeta());
-                            meta.setDisplayName("§a§lx%.2f".formatted(game.getMultiplier()));
+                            meta.setDisplayName(new Message("&a&lx%.2f".formatted(game.getMultiplier())).colorize().getMessage());
 
-                            // TODO: Fix multiplier to represent the correct multiplier
-                            String currentAmountFormatted = "§7Current: §e$" + session.getBetManager().getBetAmount().longValue() * game.getMultiplier().longValue();
-                            meta.setLore(List.of(currentAmountFormatted,"§a§lClick to cash out!"));
+                            meta.setLore(new MessageList(List.of("&a&lClick to cash out!")).colorize().getMessages());
                             item.setItemMeta(meta);
 
                             return item;
                         } else {
                             ItemStack item = new ItemStack(Material.LIME_STAINED_GLASS_PANE);
                             ItemMeta meta = Objects.requireNonNull(item.getItemMeta());
-                            meta.setDisplayName("§a§lStart");
-                            meta.setLore(List.of("§a§lClick to start the game!"));
+                            meta.setDisplayName(new Message("&a&lStart").colorize().getMessage());
+                            meta.setLore(new MessageList(List.of("&a&lClick to start the game!")).colorize().getMessages());
                             item.setItemMeta(meta);
                             return item;
                         }

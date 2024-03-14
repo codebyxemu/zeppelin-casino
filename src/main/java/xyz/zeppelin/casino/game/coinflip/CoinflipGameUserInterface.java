@@ -6,6 +6,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import xyz.zeppelin.casino.message.Message;
 import xyz.zeppelin.casino.ui.InventoryUserInterface;
 import xyz.zeppelin.casino.ui.InventoryUserInterfaceItem;
 
@@ -99,11 +100,11 @@ public class CoinflipGameUserInterface extends InventoryUserInterface {
                             ((SkullMeta) statusMeta).setOwningPlayer(session.getPlayer());
                         }
                         if (animationTick > 60) {
-                            statusMeta.setDisplayName(session.getGame().isWin() ? "§aYou won!" : "§cYou lost!");
+                            statusMeta.setDisplayName(session.getGame().isWin() ? new Message("&aYou won!").colorize().getMessage() : new Message("&cYou lost!").colorize().getMessage());
                         } else if (animationTick > 1) {
-                            statusMeta.setDisplayName("§aFlipping the coin...");
+                            statusMeta.setDisplayName(new Message("&aFlipping the coin...").colorize().getMessage());
                         } else {
-                            statusMeta.setDisplayName("§aPick a side to flip the coin.");
+                            statusMeta.setDisplayName(new Message("&aPick a side to flip the coin...").colorize().getMessage());
                         }
                         status.setItemMeta(statusMeta);
                         return status;
@@ -134,7 +135,7 @@ public class CoinflipGameUserInterface extends InventoryUserInterface {
     private ItemStack createHeads() {
         ItemStack heads = new ItemStack(Material.BLUE_STAINED_GLASS_PANE);
         ItemMeta headsMeta = Objects.requireNonNull(heads.getItemMeta());
-        headsMeta.setDisplayName("§9Heads");
+        headsMeta.setDisplayName(new Message("&9Heads").colorize().getMessage());
         heads.setItemMeta(headsMeta);
         return heads;
     }
@@ -142,7 +143,7 @@ public class CoinflipGameUserInterface extends InventoryUserInterface {
     private ItemStack createTails() {
         ItemStack tails = new ItemStack(Material.YELLOW_STAINED_GLASS_PANE);
         ItemMeta tailsMeta = Objects.requireNonNull(tails.getItemMeta());
-        tailsMeta.setDisplayName("§eTails");
+        tailsMeta.setDisplayName(new Message("&eTails").colorize().getMessage());
         tails.setItemMeta(tailsMeta);
         return tails;
     }

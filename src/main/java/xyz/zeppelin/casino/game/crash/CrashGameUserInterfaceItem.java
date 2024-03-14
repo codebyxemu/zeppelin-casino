@@ -12,6 +12,8 @@ import xyz.zeppelin.casino.component.ComponentManager;
 import xyz.zeppelin.casino.config.MainConfig;
 import xyz.zeppelin.casino.config.MessagesConfig;
 import xyz.zeppelin.casino.game.PlayerBetManager;
+import xyz.zeppelin.casino.message.Message;
+import xyz.zeppelin.casino.message.MessageList;
 import xyz.zeppelin.casino.ui.GamePreferencesUserInterface;
 import xyz.zeppelin.casino.ui.InventoryUserInterfaceItem;
 
@@ -45,14 +47,14 @@ public class CrashGameUserInterfaceItem implements InventoryUserInterfaceItem {
         ItemMeta meta = Objects.requireNonNull(item.getItemMeta());
         meta.addEnchant(Enchantment.DURABILITY, 1, true);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        meta.setDisplayName("§c§lCrash");
-        meta.setLore(List.of(
-                "§7Rapidly escalating multiplier, cash out before it crashes!",
+        meta.setDisplayName(new Message("&c&lCrash").colorize().getMessage());
+        meta.setLore(new MessageList(List.of(
+                "&7Rapidly escalating multiplier, cash out before it crashes!",
                 "",
-                "§7Minimum Bet: §a%s §7– Maximum Bet: §a%s".formatted(minBetFormatted, maxBetFormatted),
+                "&7Minimum Bet: &a%s &7– Maximum Bet: &a%s".formatted(minBetFormatted, maxBetFormatted),
                 "",
-                "§eClick to play!"
-        ));
+                "&eClick to play!"
+        )).colorize().getMessages());
         item.setItemMeta(meta);
         return item;
     }
