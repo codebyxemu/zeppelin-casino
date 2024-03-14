@@ -13,6 +13,8 @@ import xyz.zeppelin.casino.config.MainConfig;
 import xyz.zeppelin.casino.config.MessagesConfig;
 import xyz.zeppelin.casino.game.Game;
 import xyz.zeppelin.casino.game.PlayerBetManager;
+import xyz.zeppelin.casino.message.Message;
+import xyz.zeppelin.casino.message.MessageList;
 import xyz.zeppelin.casino.ui.GamePreferencesUserInterface;
 import xyz.zeppelin.casino.ui.InventoryUserInterfaceItem;
 
@@ -46,17 +48,17 @@ public class MinesGameUserInterfaceItem implements InventoryUserInterfaceItem {
         ItemMeta meta = Objects.requireNonNull(item.getItemMeta());
         meta.addEnchant(Enchantment.DURABILITY, 1, true);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        meta.setDisplayName("§c§lMines");
-        meta.setLore(List.of(
-                "§eFeatured Game",
+        meta.setDisplayName(new Message("&c&lMines").colorize().getMessage());
+        meta.setLore(new MessageList(List.of(
+                "&eFeatured Game",
                 "",
-                "§7Classic mines game, open tiles to find a multiplier... or a mine!",
+                "&7Classic mines game, open tiles to find a multiplier... or a mine!",
                 "",
-                "§7Minimum Bet: §a%s §7– Maximum Bet: §a%s".formatted(minBetFormatted, maxBetFormatted),
-                "§7Difficulty: §aEasy, §eMedium, §cHard",
+                "&7Minimum Bet: &a%s &7– Maximum Bet: &a%s".formatted(minBetFormatted, maxBetFormatted),
+                "&7Difficulty: &aEasy, &eMedium, &cHard",
                 "",
-                "§eClick to play!"
-        ));
+                "&eClick to play!"
+        )).colorize().getMessages());
         item.setItemMeta(meta);
         return item;
     }

@@ -5,6 +5,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import xyz.zeppelin.casino.message.Message;
+import xyz.zeppelin.casino.message.MessageList;
 import xyz.zeppelin.casino.ui.InventoryUserInterface;
 import xyz.zeppelin.casino.ui.InventoryUserInterfaceItem;
 
@@ -36,8 +38,8 @@ public class MinesGameUserInterface extends InventoryUserInterface {
         ItemStack betItem = new ItemStack(Material.PAPER, 1);
         ItemMeta betItemMeta = Objects.requireNonNull(betItem.getItemMeta());
         String formattedBet = DecimalFormat.getCurrencyInstance(Locale.US).format(session.getBetManager().getBetAmount());
-        betItemMeta.setDisplayName("§a" + formattedBet);
-        betItemMeta.setLore(List.of("§7Total Bet"));
+        betItemMeta.setDisplayName(new Message("&a" + formattedBet).colorize().getMessage());
+        betItemMeta.setLore(new MessageList(List.of("&7Total Bet")).colorize().getMessages());
         betItem.setItemMeta(betItemMeta);
         InventoryUserInterfaceItem betUserInterfaceItem = InventoryUserInterfaceItem.staticItem(betItem);
         addItem(betUserInterfaceItem, 19);
@@ -47,8 +49,8 @@ public class MinesGameUserInterface extends InventoryUserInterface {
         ItemStack balanceItem = new ItemStack(Material.SUNFLOWER, 1);
         ItemMeta balanceItemMeta = Objects.requireNonNull(balanceItem.getItemMeta());
         String formattedBalance = DecimalFormat.getCurrencyInstance(Locale.US).format(session.getBetManager().getBalance());
-        balanceItemMeta.setDisplayName("§a" + formattedBalance);
-        balanceItemMeta.setLore(List.of("§7Current Balance"));
+        balanceItemMeta.setDisplayName(new Message("&a" + formattedBalance).colorize().getMessage());
+        balanceItemMeta.setLore(new MessageList(List.of("&7Current Balance")).colorize().getMessages());
         balanceItem.setItemMeta(balanceItemMeta);
         InventoryUserInterfaceItem balanceUserInterfaceItem = InventoryUserInterfaceItem.staticItem(balanceItem);
         addItem(balanceUserInterfaceItem, 10);
@@ -64,12 +66,12 @@ public class MinesGameUserInterface extends InventoryUserInterface {
                         String formattedMultiplier = new DecimalFormat("0.00").format(multiplier);
                         ItemStack item = new ItemStack(Material.EMERALD_BLOCK, 1);
                         ItemMeta meta = Objects.requireNonNull(item.getItemMeta());
-                        meta.setDisplayName("§aCASH OUT");
-                        meta.setLore(List.of(
-                                "§7You can only cash out when you are over 1.00x in multiplier.",
+                        meta.setDisplayName(new Message("&a&lCASH OUT").colorize().getMessage());
+                        meta.setLore(new MessageList(List.of(
+                                "&7You can only cash out when you are over 1.00x in multiplier.",
                                 "",
-                                "§7Current Profit: " + (multiplier.compareTo(BigDecimal.ZERO) > 0 ? "§a" + formattedMultiplier : "§c" + formattedMultiplier) + "x"
-                        ));
+                                "&7Current Profit: " + (multiplier.compareTo(BigDecimal.ZERO) > 0 ? "&a" + formattedMultiplier : "&c" + formattedMultiplier) + "x"
+                        )).colorize().getMessages());
                         item.setItemMeta(meta);
                         return item;
                     }

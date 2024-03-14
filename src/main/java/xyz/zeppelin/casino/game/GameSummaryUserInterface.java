@@ -4,6 +4,8 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import xyz.zeppelin.casino.message.Message;
+import xyz.zeppelin.casino.message.MessageList;
 import xyz.zeppelin.casino.ui.CasinoUserInterface;
 import xyz.zeppelin.casino.ui.InventoryUserInterface;
 import xyz.zeppelin.casino.ui.InventoryUserInterfaceItem;
@@ -35,23 +37,23 @@ public class GameSummaryUserInterface extends InventoryUserInterface {
         if (isWin) {
             String formattedWinning = DecimalFormat.getCurrencyInstance(Locale.US).format(betManager.calculateWinning());
             addInfo(
-                    "§aYou played %s and won!".formatted(gameName),
-                    List.of(
-                            "§7Bet was §a%s".formatted(formattedBetAmount),
-                            "§7Multiplier was §a%.2f".formatted(betManager.getMultiplier()),
-                            "§7Total win is §a%s".formatted(formattedWinning)
-                    )
+                    new Message("&aYou played %s and won!".formatted(gameName)).colorize().getMessage(),
+                    new MessageList(List.of(
+                            "&7Bet was &a%s".formatted(formattedBetAmount),
+                            "&7Multiplier was &a%.2f".formatted(betManager.getMultiplier()),
+                            "&7Total win is &a%s".formatted(formattedWinning)
+                    )).colorize().getMessages()
             );
-            addDecorations(Material.GREEN_STAINED_GLASS_PANE, "§aWin");
+            addDecorations(Material.GREEN_STAINED_GLASS_PANE, new Message("&aWin").colorize().getMessage());
         } else {
             addInfo(
-                    "§cYou played %s and lost!".formatted(gameName),
-                    List.of(
-                            "§7Bet was §a%s".formatted(formattedBetAmount),
-                            "§7You lost §a%s".formatted(formattedBetAmount)
-                    )
+                    new Message("&cYou played %s and lost!".formatted(gameName)).colorize().getMessage(),
+                    new MessageList(List.of(
+                            "&7Bet was &a%s".formatted(formattedBetAmount),
+                            "&7You lost &a%s".formatted(formattedBetAmount)
+                    )).colorize().getMessages()
             );
-            addDecorations(Material.RED_STAINED_GLASS_PANE, "§cLose");
+            addDecorations(Material.RED_STAINED_GLASS_PANE, new Message("&cLose").colorize().getMessage());
         }
     }
 
@@ -67,8 +69,8 @@ public class GameSummaryUserInterface extends InventoryUserInterface {
     private void addMainMenu() {
         ItemStack itemStack = new ItemStack(Material.COMPASS, 1);
         ItemMeta itemMeta = Objects.requireNonNull(itemStack.getItemMeta());
-        itemMeta.setDisplayName("§cMain Menu");
-        itemMeta.setLore(List.of("§7Return to the games menu"));
+        itemMeta.setDisplayName(new Message("&cMain Menu").colorize().getMessage());
+        itemMeta.setLore(new MessageList(List.of("&7Return to the games menu")).colorize().getMessages());
         itemStack.setItemMeta(itemMeta);
         addItem(
                 InventoryUserInterfaceItem.staticItem(itemStack, event -> {
@@ -82,8 +84,8 @@ public class GameSummaryUserInterface extends InventoryUserInterface {
     private void addRepeat() {
         ItemStack itemStack = new ItemStack(Material.FIREWORK_ROCKET, 1);
         ItemMeta itemMeta = Objects.requireNonNull(itemStack.getItemMeta());
-        itemMeta.setDisplayName("§aRepeat");
-        itemMeta.setLore(List.of("§7Play %s again with the same bet".formatted(gameName)));
+        itemMeta.setDisplayName(new Message("&aRepeat").colorize().getMessage());
+        itemMeta.setLore(new MessageList(List.of("&7Play %s again with the same bet".formatted(gameName))).colorize().getMessages());
         itemStack.setItemMeta(itemMeta);
         addItem(
                 InventoryUserInterfaceItem.staticItem(itemStack, event -> {

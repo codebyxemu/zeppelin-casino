@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import xyz.zeppelin.casino.message.Message;
 import xyz.zeppelin.casino.ui.InventoryUserInterfaceItem;
 
 import java.math.BigDecimal;
@@ -22,9 +23,9 @@ public class WheelGamePositionUserInterfaceItem implements InventoryUserInterfac
         ItemStack position = new ItemStack(getMaterial(multiplier), 1);
         ItemMeta meta = Objects.requireNonNull(position.getItemMeta());
         if (multiplier.equals(BigDecimal.ZERO)) {
-            meta.setDisplayName("§cLose");
+            meta.setDisplayName(new Message("&cLose").colorize().getMessage());
         } else {
-            meta.setDisplayName("§e" + multiplier + "x");
+            meta.setDisplayName(new Message("&e" + multiplier + "x").colorize().getMessage());
         }
         position.setItemMeta(meta);
         return position;

@@ -5,6 +5,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import xyz.zeppelin.casino.message.Message;
 import xyz.zeppelin.casino.ui.InventoryUserInterface;
 import xyz.zeppelin.casino.ui.InventoryUserInterfaceItem;
 
@@ -54,9 +55,9 @@ public class WheelGameUserInterface extends InventoryUserInterface {
                         ItemStack item = new ItemStack(Material.LIME_STAINED_GLASS_PANE, 1);
                         ItemMeta itemMeta = Objects.requireNonNull(item.getItemMeta());
                         if (session.getGame().hasStarted()) {
-                            itemMeta.setDisplayName("§a§lSpinning...");
+                            itemMeta.setDisplayName(new Message("&a&lSpinning...").colorize().getMessage());
                         } else {
-                            itemMeta.setDisplayName("§a§lSpin");
+                            itemMeta.setDisplayName(new Message("&a&lSpin").colorize().getMessage());
                         }
                         item.setItemMeta(itemMeta);
                         return item;

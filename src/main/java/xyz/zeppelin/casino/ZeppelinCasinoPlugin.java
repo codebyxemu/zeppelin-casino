@@ -3,6 +3,7 @@ package xyz.zeppelin.casino;
 import dev.demeng.sentinel.wrapper.SentinelClient;
 import dev.demeng.sentinel.wrapper.exception.ApiException;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.zeppelin.casino.bridge.EconomyBridge;
 import xyz.zeppelin.casino.bstats.BstatsComponent;
@@ -38,10 +39,12 @@ public class ZeppelinCasinoPlugin extends JavaPlugin {
     public void onEnable() {
         componentManager.enableComponents();
 
+        Bukkit.getLogger().info("Welcome to Zeppelin Casino v" + getDescription().getVersion() + ".");
+
         if (authenticate()) {
-            Bukkit.getLogger().info("[ZeppelinCasino] Your license was confirmed. Thanks for your purchase!");
+            Bukkit.getLogger().info("Your license was confirmed. Thanks for your purchase!");
         } else {
-            Bukkit.getLogger().warning("[ZeppelinCasino] You do not have a valid license for Zeppelin Casino. " +
+            Bukkit.getLogger().warning("You do not have a valid license for Zeppelin Casino. " +
                     "The plugin will shut down now. You can receive a license in our Discord server.");
             getServer().getPluginManager().disablePlugin(this);
         }

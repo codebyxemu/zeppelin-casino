@@ -5,6 +5,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import xyz.zeppelin.casino.message.Message;
+import xyz.zeppelin.casino.message.MessageList;
 import xyz.zeppelin.casino.ui.InventoryUserInterface;
 import xyz.zeppelin.casino.ui.InventoryUserInterfaceItem;
 
@@ -34,9 +36,9 @@ public class SlotsGameUserInterface extends InventoryUserInterface {
                 ItemStack play = new ItemStack(Material.LIME_STAINED_GLASS_PANE, 1);
                 ItemMeta playMeta = Objects.requireNonNull(play.getItemMeta());
                 if (session.getGame().hasStarted()) {
-                    playMeta.setDisplayName("§aPlaying...");
+                    playMeta.setDisplayName(new Message("&aPlaying...").colorize().getMessage());
                 } else {
-                    playMeta.setDisplayName("§aPlay");
+                    playMeta.setDisplayName(new Message("&aPlay").colorize().getMessage());
                 }
                 play.setItemMeta(playMeta);
                 return play;
@@ -65,7 +67,7 @@ public class SlotsGameUserInterface extends InventoryUserInterface {
                 SlotsGame.Slot slot = session.getGame().getSlot(ordinal);
                 ItemStack item = new ItemStack(slot.material(), 1);
                 ItemMeta meta = Objects.requireNonNull(item.getItemMeta());
-                meta.setDisplayName("§ax%.2f".formatted(slot.multiplier()));
+                meta.setDisplayName(new Message("&ax%.2f".formatted(slot.multiplier())).colorize().getMessage());
                 item.setItemMeta(meta);
                 return item;
             }
@@ -81,12 +83,12 @@ public class SlotsGameUserInterface extends InventoryUserInterface {
     private void addDecorations() {
         ItemStack whitePane = new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1);
         ItemMeta whitePaneMeta = Objects.requireNonNull(whitePane.getItemMeta());
-        whitePaneMeta.setDisplayName("§7Match three slots to win!");
-        whitePaneMeta.setLore(List.of(
-                "§7Each slot has a different multiplier.",
+        whitePaneMeta.setDisplayName(new Message("&7Match three slots to win!").colorize().getMessage());
+        whitePaneMeta.setLore(new MessageList(List.of(
+                "&7Each slot has a different multiplier.",
                 "",
-                "§7To play the game, click the green button."
-        ));
+                "&7To play the game, click the green button."
+        )).colorize().getMessages());
         whitePane.setItemMeta(whitePaneMeta);
         InventoryUserInterfaceItem whitePaneItem = InventoryUserInterfaceItem.staticItem(whitePane);
         addItem(whitePaneItem, 11, 12, 13, 14, 15, 20, 24, 29, 30, 31, 32, 33);
