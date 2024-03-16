@@ -22,10 +22,10 @@ public class CasinoUserInterface extends InventoryUserInterface {
 
     private CasinoUserInterface(Plugin plugin) {
         super(plugin, "Casino", 45);
-        addItems();
-
         this.mainConfig = ComponentManager.getComponentManager(plugin).getComponent(MainConfig.class);
+        addItems();
     }
+
 
     private void addItems() {
         addCosmeticItems();
