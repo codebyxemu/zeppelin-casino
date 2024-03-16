@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.zeppelin.casino.commandapi.CommandComponent;
 import xyz.zeppelin.casino.component.ComponentManager;
+import xyz.zeppelin.casino.config.MainConfig;
 import xyz.zeppelin.casino.config.MessagesConfig;
 import xyz.zeppelin.casino.game.coinflip.CoinflipGameUserInterfaceItem;
 import xyz.zeppelin.casino.game.crash.CrashGame;
@@ -21,6 +22,9 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 
 public class CasinoCommand extends CommandComponent {
+
+    protected MainConfig config;
+
     protected CrashGameUserInterfaceItem crash;
     protected CoinflipGameUserInterfaceItem coinFlip;
     protected MinesGameUserInterfaceItem mines;
@@ -41,6 +45,8 @@ public class CasinoCommand extends CommandComponent {
         wheel = new WheelGameUserInterfaceItem(plugin);
 
         createCommand().register();
+
+        this.config = ComponentManager.getComponentManager(plugin).getComponent(MainConfig.class);
     }
 
     @Override
@@ -61,18 +67,43 @@ public class CasinoCommand extends CommandComponent {
 
                         switch (game) {
                             case "crash":
+                                if (!config.gameStatus("crash")) {
+                                    MessagesConfig messages = ComponentManager.getComponentManager(plugin).getComponent(MessagesConfig.class);
+                                    player.sendMessage(messages.getMessage("game-does-not-exist"));
+                                    return;
+                                }
                                 crash.quickOpen(player);
                                 break;
                             case "wheel":
+                                if (!config.gameStatus("wheel")) {
+                                    MessagesConfig messages = ComponentManager.getComponentManager(plugin).getComponent(MessagesConfig.class);
+                                    player.sendMessage(messages.getMessage("game-does-not-exist"));
+                                    return;
+                                }
                                 wheel.quickOpen(player);
                                 break;
                             case "slots":
+                                if (!config.gameStatus("slots")) {
+                                    MessagesConfig messages = ComponentManager.getComponentManager(plugin).getComponent(MessagesConfig.class);
+                                    player.sendMessage(messages.getMessage("game-does-not-exist"));
+                                    return;
+                                }
                                 slots.quickOpen(player);
                                 break;
                             case "mines":
+                                if (!config.gameStatus("mines")) {
+                                    MessagesConfig messages = ComponentManager.getComponentManager(plugin).getComponent(MessagesConfig.class);
+                                    player.sendMessage(messages.getMessage("game-does-not-exist"));
+                                    return;
+                                }
                                 mines.quickOpen(player);
                                 break;
                             case "coinflip":
+                                if (!config.gameStatus("coinflip")) {
+                                    MessagesConfig messages = ComponentManager.getComponentManager(plugin).getComponent(MessagesConfig.class);
+                                    player.sendMessage(messages.getMessage("game-does-not-exist"));
+                                    return;
+                                }
                                 coinFlip.quickOpen(player);
                                 break;
                         }

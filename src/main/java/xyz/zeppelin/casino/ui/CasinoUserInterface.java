@@ -5,6 +5,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
+import xyz.zeppelin.casino.component.ComponentManager;
+import xyz.zeppelin.casino.config.MainConfig;
+import xyz.zeppelin.casino.config.MessagesConfig;
 import xyz.zeppelin.casino.game.coinflip.CoinflipGameUserInterfaceItem;
 import xyz.zeppelin.casino.game.crash.CrashGameUserInterfaceItem;
 import xyz.zeppelin.casino.game.mines.MinesGameUserInterfaceItem;
@@ -15,19 +18,44 @@ import java.util.Objects;
 
 public class CasinoUserInterface extends InventoryUserInterface {
 
+    protected final MainConfig mainConfig;
+
     private CasinoUserInterface(Plugin plugin) {
         super(plugin, "Casino", 45);
         addItems();
+
+        this.mainConfig = ComponentManager.getComponentManager(plugin).getComponent(MainConfig.class);
     }
 
     private void addItems() {
         addCosmeticItems();
 
-        addItem(20, new CrashGameUserInterfaceItem(plugin));
-        addItem(21, new WheelGameUserInterfaceItem(plugin));
-        addItem(22, new MinesGameUserInterfaceItem(plugin));
-        addItem(23, new CoinflipGameUserInterfaceItem(plugin));
-        addItem(24, new SlotsGameUserInterfaceItem(plugin));
+        int crashSlot = mainConfig.gameSlot("crash");
+        int wheelSlot = mainConfig.gameSlot("wheel");
+        int minesSlot = mainConfig.gameSlot("mines");
+        int coinflipSlot = mainConfig.gameSlot("coinflip");
+        int slotsSlot = mainConfig.gameSlot("slots");
+
+        if (crashSlot == -1 || wheelSlot == -1 || minesSlot == -1 || coinflipSlot == -1 || slotsSlot == -1) {
+            throw new IllegalStateException("Invalid game slot configuration. Please check your config.yml file.");
+        }
+
+        // Check if any of the games are disabled
+        if (mainConfig.gameStatus("crash")) {
+            addItem(crashSlot, new CrashGameUserInterfaceItem(plugin));
+        }
+        if (mainConfig.gameStatus("wheel")) {
+            addItem(wheelSlot, new WheelGameUserInterfaceItem(plugin));
+        }
+        if (mainConfig.gameStatus("mines")) {
+            addItem(minesSlot, new MinesGameUserInterfaceItem(plugin));
+        }
+        if (mainConfig.gameStatus("coinflip")) {
+            addItem(coinflipSlot, new CoinflipGameUserInterfaceItem(plugin));
+        }
+        if (mainConfig.gameStatus("slots")) {
+            addItem(slotsSlot, new SlotsGameUserInterfaceItem(plugin));
+        }
     }
 
     private void addCosmeticItems() {

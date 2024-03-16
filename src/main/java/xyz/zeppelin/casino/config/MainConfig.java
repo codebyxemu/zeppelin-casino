@@ -31,6 +31,26 @@ public class MainConfig extends BaseConfig {
         return Objects.requireNonNull(configuration.getString("license.license-key"));
     }
 
+    public boolean gameStatus(String gameName) {
+        String[] acceptedGames = {"coinflip", "crash", "mines", "slots", "wheel"};
+        if (List.of(acceptedGames).contains(gameName)) {
+            return configuration.getBoolean("games." + gameName);
+        } else {
+            return false;
+        }
+    }
+
+    public int gameSlot(String gameName) {
+        String[] acceptedGames = {"coinflip", "crash", "mines", "slots", "wheel"};
+        if (List.of(acceptedGames).contains(gameName)) {
+            return configuration.getInt("casino-gui." + gameName);
+        } else {
+            return -1;
+        }
+    }
+
+
+
     public CoinflipGame.Config getCoinflipConfig() {
         ConfigurationSection gameSection = Objects.requireNonNull(configuration.getConfigurationSection("coinflip"));
         BigDecimal maxBet = new BigDecimal(Objects.requireNonNull(gameSection.getString("max-bet")));
