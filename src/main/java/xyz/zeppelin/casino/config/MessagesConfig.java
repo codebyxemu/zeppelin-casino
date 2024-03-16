@@ -1,6 +1,8 @@
 package xyz.zeppelin.casino.config;
 
+import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
+import xyz.zeppelin.casino.message.Message;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -23,7 +25,7 @@ public class MessagesConfig extends BaseConfig {
     }
 
     public String getMessage(String key) {
-        return configuration.getString(key);
+        return new Message(configuration.getString(key)).colorize().getMessage();
     }
 
     public static MessagesConfig createDefault(Plugin plugin) {
