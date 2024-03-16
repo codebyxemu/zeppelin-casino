@@ -18,7 +18,7 @@ import java.util.Objects;
 
 public class CasinoUserInterface extends InventoryUserInterface {
 
-    private MainConfig mainConfig;
+    protected final MainConfig mainConfig;
 
     private CasinoUserInterface(Plugin plugin) {
         super(plugin, "Casino", 45);
