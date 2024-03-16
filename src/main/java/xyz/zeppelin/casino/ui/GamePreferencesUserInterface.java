@@ -101,7 +101,7 @@ public class GamePreferencesUserInterface extends InventoryUserInterface {
                 } else {
                     formattedBetAmount = new Message("&7Not set").colorize().getMessage();
                 }
-                setBetMeta.setLore(new MessageList(List.of("§7Current: §f" + formattedBetAmount)).colorize().getMessages());
+                setBetMeta.setLore(new MessageList(List.of("&7Current: &f" + formattedBetAmount)).colorize().getMessages());
                 setBetItem.setItemMeta(setBetMeta);
                 return setBetItem;
             }
@@ -165,7 +165,7 @@ public class GamePreferencesUserInterface extends InventoryUserInterface {
                         Game.Difficulty.HARD,
                         Material.RED_STAINED_GLASS_PANE,
                         new Message("&c&lHARD").colorize().getMessage(),
-                        new MessageList(List.of("§7For the high rollers that want to earn some big cash.")).colorize().getMessages()
+                        new MessageList(List.of("&7For the high rollers that want to earn some big cash.")).colorize().getMessages()
                 )
         );
     }
