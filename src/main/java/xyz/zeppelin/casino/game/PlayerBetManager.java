@@ -2,10 +2,14 @@ package xyz.zeppelin.casino.game;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import xyz.zeppelin.casino.bridge.EconomyBridge;
 import xyz.zeppelin.casino.component.ComponentManager;
+import xyz.zeppelin.casino.config.MainConfig;
 import xyz.zeppelin.casino.config.MessagesConfig;
 
 import java.math.BigDecimal;
@@ -24,11 +28,13 @@ public class PlayerBetManager {
     @Setter
     private BigDecimal multiplier = BigDecimal.ZERO;
 
+
     public PlayerBetManager(Plugin plugin, Player player, BigDecimal betAmount) {
         this.plugin = plugin;
         this.economyBridge = ComponentManager.getComponentManager(plugin).getComponent(EconomyBridge.class);
         this.player = player;
         this.betAmount = betAmount;
+
     }
 
     public boolean placeBet() {
@@ -44,6 +50,8 @@ public class PlayerBetManager {
     }
 
     public BigDecimal calculateWinning() {
+
+
         return betAmount.add(betAmount.multiply(multiplier));
     }
 
@@ -62,4 +70,5 @@ public class PlayerBetManager {
     public void reset() {
         multiplier = BigDecimal.ZERO;
     }
+
 }

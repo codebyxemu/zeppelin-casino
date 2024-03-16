@@ -106,7 +106,24 @@ public class MainConfig extends BaseConfig {
         return new MinesGame.Config(baseMineChance, baseMinMultiplier, baseMaxMultiplier, difficultyMultipliers, maxBet, minBet);
     }
 
+    public boolean isBigWinAnnounce() {
+        return configuration.getBoolean("big-win-announce.enabled");
+    }
+
+    public double getBigWinMultiplier() {
+        return configuration.getDouble("big-win-announce.aboveMultiplier");
+    }
+
+    public String getBigWinAnnounce(String username, String gameName, String formattedWinning, double multiplier) {
+        return Objects.requireNonNull(configuration.getString("big-win-announce.command"), "")
+                .replace("%username%", username)
+                .replace("%game%", gameName)
+                .replace("%winning%", formattedWinning)
+                .replace("%multiplier%", String.valueOf(multiplier));
+    }
+
     public static MainConfig createDefault(Plugin plugin) {
         return new MainConfig(new File(plugin.getDataFolder(), "config.yml"), "/config/config.yml", plugin.getLogger());
     }
+
 }

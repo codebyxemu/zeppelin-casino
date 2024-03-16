@@ -5,6 +5,12 @@ license:
   # License key can be obtained by contacting Xemu on Discord (@xemuu) or sending a message on BuiltByBit: @Xemu
   license-key: ""
 
+big-win-announce:
+  enabled: true
+  aboveMultiplier: 1.00
+  command: "broadcast &e&l(CASINO) &a%username%&7 just won &e%winning% &7from &a%game% &7(&f%multiplier%x&7)"
+
+
 # Enable or disable games
 # When disabled, also make sure to remove the item from the GUI
 games:
@@ -46,10 +52,7 @@ wheel:
   min-bet: 10
   max-bet: 10000
   items: [
-    0.1, 0, 0, 0.5, 0, 0, 0, 1, 2, 0, 0.1, 0, 5, 0, 0.1, 0, 0, 0.2, 0, 0, 0.1, 0, 0, 10, 0, 0, 0.1, 0, 0,
-    0.1, 0, 0, 0, 0, 0.2, 0.2, 0, 0.3, 0, 0, 0.1, 0, 0, 25, 0.1, 0, 0, 0, 0, 0, 0.1, 0, 0, 0.1, 0, 0, 0.1,
-    0, 0, 0.1, 0.2, 0, 0, 0.4, 0, 0.5, 0, 0, 0, 0, 0, 0, 0, 0.5, 50, 0.5, 0, 0, 0, 0, 0, 0.1, 0, 0, 0.1, 0,
-    100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.1, 0, 0, 0, 0, 0, 0, 0, 0, 0.1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.1, 0,
+    0.1, 0.25, 0, 0.5, 0, 1, 1, 2, 50, 0.1, 0.25, 1, 0.43, 55, 0, 0, 200, 0, 0.50, 1, 1
   ]
 slots:
   min-bet: 10
