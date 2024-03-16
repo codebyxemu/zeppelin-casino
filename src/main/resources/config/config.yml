@@ -5,6 +5,24 @@ license:
   # License key can be obtained by contacting Xemu on Discord (@xemuu) or sending a message on BuiltByBit: @Xemu
   license-key: ""
 
+# Enable or disable games
+# When disabled, also make sure to remove the item from the GUI
+games:
+  coinflip: true
+  mines: true
+  crash: true
+  wheel: true
+  slots: true
+
+# This is to configure the slots in the main GUI.
+# Type 0 to remove them from the GUI.
+casino-gui:
+  crash: 20
+  wheel: 21
+  slots: 24
+  coinflip: 22
+  mines: 23
+
 coinflip:
   min-bet: 10
   max-bet: 10000
