@@ -6,17 +6,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-import xyz.zeppelin.casino.ZeppelinCasinoPlugin;
 import xyz.zeppelin.casino.component.ComponentManager;
 import xyz.zeppelin.casino.config.MainConfig;
 import xyz.zeppelin.casino.discord.DiscordWebhook;
-import xyz.zeppelin.casino.message.Message;
 
 import java.awt.*;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
-import java.util.Arrays;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.Consumer;
@@ -56,13 +56,10 @@ public abstract class SinglePlayerGameSession<T extends Game> extends BaseGameSe
     protected final void openSummaryUI(String gameName, boolean isWin, Consumer<PlayerBetManager> repeat) {
         GameSummaryUserInterface.open(betManager, repeat, gameName, isWin);
 
-        // TODO: Discord webhook
-
         if (bigWinAnnounce) {
 
             if (isWin && betManager.getMultiplier().compareTo(BigDecimal.valueOf(bigWinMultiplier)) >= 0) {
                 String formattedWinning = DecimalFormat.getCurrencyInstance(Locale.US).format(betManager.calculateWinning());
-
 
                 ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
                 String command = mainConfig.getBigWinAnnounce(
@@ -72,33 +69,45 @@ public abstract class SinglePlayerGameSession<T extends Game> extends BaseGameSe
                         Math.round(betManager.getMultiplier().doubleValue())
                 );
 
-                // TODO: Remove
-                Bukkit.getLogger().info(command);
-
-
-
                 Bukkit.dispatchCommand(console, command);
-
             }
         }
 
         if (discordWebhookEnabled) {
-            if (!discordWebhookUrl.isEmpty()) {
+            if (discordWebhookUrl.isEmpty()) {
                 return;
             }
 
+            String formattedBetAmount = DecimalFormat.getCurrencyInstance(Locale.US).format(betManager.getBetAmount());
             String formattedWinning = DecimalFormat.getCurrencyInstance(Locale.US).format(betManager.calculateWinning());
 
             DiscordWebhook webhook = new DiscordWebhook(discordWebhookUrl);
             DiscordWebhook.EmbedObject embedObject = new DiscordWebhook.EmbedObject();
 
-            embedObject.setTitle("Game has been completed");
-            embedObject.setDescription("A player has completed!");
-            embedObject.addField("Player", player.getName(), true);
-            embedObject.addField("Game", gameName, true);
-            embedObject.addField("Return on Bet", formattedWinning, true);
-            embedObject.addField("Multiplier", "x" + Math.round(betManager.getMultiplier().doubleValue()), true);
-            embedObject.setColor(Color.orange);
+            LocalDateTime now = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String formatDateTime = now.format(formatter);
+
+            DecimalFormat df = new DecimalFormat("#.##");
+            df.setRoundingMode(RoundingMode.CEILING);
+
+            String result = df.format(betManager.getMultiplier().doubleValue());
+            double roundedDouble = Double.parseDouble(result);
+
+
+            embedObject.setTitle("Game completed");
+            embedObject.addField("Player", player.getName(), false);
+            embedObject.addField("Game", gameName, false);
+            embedObject.addField("Bet Amount", "`" + formattedBetAmount + "`", true);
+            embedObject.addField("Return on Bet", "`" + formattedWinning + "`", true);
+            embedObject.addField("Multiplier", "`" + roundedDouble + "x`", false);
+            embedObject.addField("Time and Date", formatDateTime, false);
+
+            if (isWin) {
+                embedObject.setColor(Color.GREEN);
+            } else {
+                embedObject.setColor(Color.RED);
+            }
 
             webhook.setUsername("Zeppelin Casino");
             webhook.setContent("A bet was placed and completed.");

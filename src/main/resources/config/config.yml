@@ -76,7 +76,7 @@ mines:
   # The maximum bet amount
   max-bet: 10000
   # The base chance of a mine appearing
-  base-mine-chance: 0.2
+  base-mine-chance: 0.25
   # The minimum multiplier to find per field
   base-min-multiplier: 0.01
   # The maximum multiplier to find per field
@@ -85,8 +85,8 @@ mines:
     # The chance of a mine appearing is the difficulty * base-mine-chance.
     # The lower the difficulty, the easier it is to win - but the less money you make.
     # The higher the difficulty, the harder it is to win - but the more money you make.
-    easy: 0.115
-    normal: 0.35
+    easy: 0.30
+    normal: 0.45
     hard: 0.75
 crash:
   # The minimum bet amount
