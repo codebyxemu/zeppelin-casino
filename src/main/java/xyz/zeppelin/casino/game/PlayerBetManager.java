@@ -50,9 +50,7 @@ public class PlayerBetManager {
     }
 
     public BigDecimal calculateWinning() {
-
-
-        return betAmount.add(betAmount.multiply(multiplier));
+        return betAmount.multiply(multiplier);
     }
 
     public boolean hasWinning() {

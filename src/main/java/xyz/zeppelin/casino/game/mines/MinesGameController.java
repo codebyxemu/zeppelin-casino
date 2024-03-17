@@ -25,11 +25,14 @@ public class MinesGameController {
     }
 
     void start() {
+        session.getBetManager().reset();
         session.getGame().prepare();
         MinesGameUserInterface userInterface = session.getUserInterface();
         userInterface.render();
         userInterface.register();
         userInterface.show(session.getPlayer());
+
+        userInterface.updateTitle();
     }
 
     void stop() {

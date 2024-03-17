@@ -6,6 +6,7 @@ import xyz.zeppelin.casino.game.Game;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class SlotsGame implements Game {
 
@@ -61,7 +62,7 @@ public class SlotsGame implements Game {
         Slot randomSlot = null;
         for (int i = 0; i < 1000; i++) { // For instead of while to avoid infinite loop in case of bad configuration.
             for (SlotConfig item : items) {
-                boolean isPicked = Math.random() < item.chance().doubleValue();
+                boolean isPicked = ThreadLocalRandom.current().nextDouble() < item.chance().doubleValue();
                 if (isPicked) {
                     randomSlot = new Slot(item.material(), item.multiplier());
                     break;

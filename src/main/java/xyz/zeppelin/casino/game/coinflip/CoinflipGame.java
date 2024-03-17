@@ -4,6 +4,7 @@ import lombok.Getter;
 import xyz.zeppelin.casino.game.Game;
 
 import java.math.BigDecimal;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class CoinflipGame implements Game {
 
@@ -13,7 +14,7 @@ public class CoinflipGame implements Game {
 
     void flip(Side pickedSide) {
         this.pickedSide = pickedSide;
-        this.winnerSide = Math.random() < 0.5 ? Side.HEADS : Side.TAILS;
+        this.winnerSide = ThreadLocalRandom.current().nextDouble(1) < 0.5 ? Side.HEADS : Side.TAILS;
     }
 
     boolean hasStarted() {

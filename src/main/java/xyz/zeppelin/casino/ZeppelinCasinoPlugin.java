@@ -2,6 +2,7 @@ package xyz.zeppelin.casino;
 
 import dev.demeng.sentinel.wrapper.SentinelClient;
 import dev.demeng.sentinel.wrapper.exception.ApiException;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -14,7 +15,9 @@ import xyz.zeppelin.casino.component.ComponentManager;
 import xyz.zeppelin.casino.config.MainConfig;
 import xyz.zeppelin.casino.config.MessagesConfig;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 public class ZeppelinCasinoPlugin extends JavaPlugin {
 
@@ -33,6 +36,7 @@ public class ZeppelinCasinoPlugin extends JavaPlugin {
             getLogger().warning("Development mode is enabled. Be careful this may be dangerous for production environments!");
         }
         componentManager.loadComponents();
+
     }
 
     @Override

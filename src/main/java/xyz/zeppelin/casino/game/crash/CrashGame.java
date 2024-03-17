@@ -4,6 +4,7 @@ import lombok.Getter;
 import xyz.zeppelin.casino.game.Game;
 
 import java.math.BigDecimal;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class CrashGame implements Game {
 
@@ -31,7 +32,7 @@ public class CrashGame implements Game {
         } else {
             multiplier = newMultiplier;
         }
-        boolean shouldCrash = Math.random() < crashChance.doubleValue();
+        boolean shouldCrash = ThreadLocalRandom.current().nextDouble() < crashChance.doubleValue();
         if (shouldCrash) crashed = true;
     }
 

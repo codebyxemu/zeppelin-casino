@@ -1,5 +1,6 @@
 package xyz.zeppelin.casino.game.mines;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -68,8 +69,6 @@ public class MinesGameUserInterface extends InventoryUserInterface {
                         ItemMeta meta = Objects.requireNonNull(item.getItemMeta());
                         meta.setDisplayName(new Message("&a&lCASH OUT").colorize().getMessage());
                         meta.setLore(new MessageList(List.of(
-                                "&7You can only cash out when you are over 1.00x in multiplier.",
-                                "",
                                 "&7Current Profit: " + (multiplier.compareTo(BigDecimal.ZERO) > 0 ? "&a" + formattedMultiplier : "&c" + formattedMultiplier) + "x"
                         )).colorize().getMessages());
                         item.setItemMeta(meta);

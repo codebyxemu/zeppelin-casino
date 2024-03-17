@@ -1,18 +1,48 @@
-# Configure License Key
+####################################################
+#               ZEPPELIN CASINO                    #
+#                                                  #
+#  Welcome to Zeppelin Casino!                     #
+#                                                  #
+#  For support and inquiries, please contact our   #
+#  customer service team.                          #
+#                                                  #
+####################################################
+
+## It is recommended that you adjust all the chances and multipliers to your liking.
+## The default values are just a suggestion and may not be balanced for your server.
+
+####################################################
+#           LICENSING INFORMATION                #
+####################################################
 license:
-  # The server name is recommended if you run the license key on multiple servers. Should be unique.
-  server-name: ""
-  # License key can be obtained by contacting Xemu on Discord (@xemuu) or sending a message on BuiltByBit: @Xemu
-  license-key: ""
+  # The server name that you should have unique.
+  server-name: ''
+  # License key can be obtained by contacting us through Discord.
+  license-key: ''
 
+####################################################
+#            DISCORD INTEGRATION                   #
+#  Receive logs on every bet placed.               #
+####################################################
+discord:
+  # Enable or disable Discord integration
+  enabled: false
+  # The webhook URL to send the logs to
+  webhook-url: ""
+
+####################################################
+#           BIG WIN ANNOUNCEMENT                 #
+####################################################
 big-win-announce:
-  enabled: true
-  aboveMultiplier: 1.00
-  command: "broadcast &e&l(CASINO) &a%username%&7 just won &e%winning% &7from &a%game% &7(&f%multiplier%x&7)"
+  enabled: false
+  aboveMultiplier: 10.0
+  command: broadcast &e&l(CASINO) &a%username%&7 just won &e%winning% &7from &a%game%
+    &7(&f%multiplier%x&7)
 
 
-# Enable or disable games
-# When disabled, also make sure to remove the item from the GUI
+####################################################
+#           ENABLE OR DISABLE GAMES                #
+####################################################
 games:
   coinflip: true
   mines: true
@@ -20,56 +50,112 @@ games:
   wheel: true
   slots: true
 
-# This is to configure the slots in the main GUI.
-# Type 0 to remove them from the GUI.
+####################################################
+#         CONFIGURE HOME MENU SLOTS                #
+####################################################
 casino-gui:
+  # Available slots: 20, 21, 22, 23, 24
   crash: 20
   wheel: 21
   slots: 24
   coinflip: 22
   mines: 23
 
+####################################################
+#               GAME CONFIGURATION                 #
+#      Configure odds and chances for the games    #
+####################################################
 coinflip:
+  # The minimum bet amount
   min-bet: 10
+    # The maximum bet amount
   max-bet: 10000
 mines:
+  # The minimum bet amount
   min-bet: 10
+  # The maximum bet amount
   max-bet: 10000
+  # The base chance of a mine appearing
   base-mine-chance: 0.2
-  base-min-multiplier: 0.05
-  base-max-multiplier: 0.15
+  # The minimum multiplier to find per field
+  base-min-multiplier: 0.01
+  # The maximum multiplier to find per field
+  base-max-multiplier: 0.65
   difficulty:
-    easy: 0.5
-    normal: 1.0
-    hard: 1.5
+    # The chance of a mine appearing is the difficulty * base-mine-chance.
+    # The lower the difficulty, the easier it is to win - but the less money you make.
+    # The higher the difficulty, the harder it is to win - but the more money you make.
+    easy: 0.115
+    normal: 0.35
+    hard: 0.75
 crash:
+  # The minimum bet amount
   min-bet: 10
+ # The maximum bet amount
   max-bet: 10000
+  # The maximum multiplier that can be reached
   max-multiplier: 100.0
+  # The base multiplier that the game starts with
   base-multiplier: 0.01
+  # For every increment, this is the chance for it to crash. 1.0 is 100%.
   crash-chance: 0.01
 wheel:
+  # The minimum bet amount
   min-bet: 10
+  # The maximum bet amount
   max-bet: 10000
-  items: [
-    0.1, 0.25, 0, 0.5, 0, 1, 1, 2, 50, 0.1, 0.25, 1, 0.43, 55, 0, 0, 200, 0, 0.50, 1, 1
-  ]
+  # All the items that can appear on the wheel, as a multiplier.
+  # 0 counts as a loss, and everything above is a win.
+  items:
+    - 0.1
+    - 0.25
+    - 0
+    - 0.5
+    - 0
+    - 1
+    - 1
+    - 2
+    - 50
+    - 0.1
+    - 0.25
+    - 1
+    - 0.43
+    - 55
+    - 0
+    - 0
+    - 200
+    - 0
+    - 0.5
+    - 1
+    - 1
 slots:
+  # The minimum bet amount
   min-bet: 10
+  # The maximum bet amount
   max-bet: 10000
   items:
     emerald:
-      chance: 0.01
+      # The chance of this item appearing - 1.0 is 100%
+      chance: 0.05
+      # The multiplier for this item
       multiplier: 100
     diamond:
-      chance: 0.05
+      # The chance of this item appearing - 1.0 is 100%
+      chance: 0.1
+      # The multiplier for this item
       multiplier: 50
     gold_ingot:
-      chance: 0.1
+      # The chance of this item appearing - 1.0 is 100%
+      chance: 0.2
+      # The multiplier for this item
       multiplier: 5
     iron_ingot:
-      chance: 0.125
+      # The chance of this item appearing - 1.0 is 100%
+      chance: 0.45
+      # The multiplier for this item
       multiplier: 2
     coal:
-      chance: 0.15
+      # The chance of this item appearing - 1.0 is 100%
+      chance: 0.60
+      # The multiplier for this item
       multiplier: 1

@@ -90,6 +90,7 @@ public class GameSummaryUserInterface extends InventoryUserInterface {
         addItem(
                 InventoryUserInterfaceItem.staticItem(itemStack, event -> {
                     repeat.accept(betManager);
+                    betManager.reset();
                     return false;
                 }),
                 16

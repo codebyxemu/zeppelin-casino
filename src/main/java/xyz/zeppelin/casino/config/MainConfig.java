@@ -122,6 +122,14 @@ public class MainConfig extends BaseConfig {
                 .replace("%multiplier%", String.valueOf(multiplier));
     }
 
+    public boolean isDiscordWebhookEnabled() {
+        return configuration.getBoolean("discord.enabled");
+    }
+
+    public String getDiscordWebhook() {
+        return Objects.requireNonNull(configuration.getString("discord.webhook-url"));
+    }
+
     public static MainConfig createDefault(Plugin plugin) {
         return new MainConfig(new File(plugin.getDataFolder(), "config.yml"), "/config/config.yml", plugin.getLogger());
     }

@@ -18,7 +18,7 @@ public class Message {
     }
 
     public Message placeholder(String placeholder, String s) {
-        this.message = placeholder.replaceAll(placeholder, s);
+        this.message = placeholder.replace(placeholder, s);
         return this;
     }
 

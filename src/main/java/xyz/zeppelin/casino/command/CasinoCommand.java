@@ -5,6 +5,7 @@ import dev.jorel.commandapi.arguments.Argument;
 import dev.jorel.commandapi.arguments.StringArgument;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import xyz.zeppelin.casino.ZeppelinCasinoPlugin;
 import xyz.zeppelin.casino.commandapi.CommandComponent;
 import xyz.zeppelin.casino.component.ComponentManager;
 import xyz.zeppelin.casino.config.MainConfig;
@@ -105,6 +106,10 @@ public class CasinoCommand extends CommandComponent {
                                     return;
                                 }
                                 coinFlip.quickOpen(player);
+                                break;
+                            default:
+                                MessagesConfig messages = ComponentManager.getComponentManager(plugin).getComponent(MessagesConfig.class);
+                                player.sendMessage(messages.getMessage("game-does-not-exist"));
                                 break;
                         }
                     }

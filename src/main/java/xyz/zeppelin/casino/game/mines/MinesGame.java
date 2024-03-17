@@ -10,6 +10,7 @@ import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Supplier;
 
 public class MinesGame implements Game {
@@ -24,6 +25,7 @@ public class MinesGame implements Game {
     @Getter
     private final Difficulty difficulty;
     private boolean lost = false;
+
 
     MinesGame(Config config, Game.Difficulty difficulty, int width, int height) {
         Preconditions.checkArgument(width > 0, "Width must be positive");
@@ -89,11 +91,11 @@ public class MinesGame implements Game {
         BigDecimal minMultiplier = baseMinMultiplier.multiply(multiplier, MATH_CONTEXT);
         BigDecimal maxMultiplier = baseMaxMultiplier.multiply(multiplier, MATH_CONTEXT);
         fillFields(() -> {
-            boolean isMine = mineChance.compareTo(BigDecimal.valueOf(Math.random())) >= 0;
+            boolean isMine = mineChance.compareTo(BigDecimal.valueOf(ThreadLocalRandom.current().nextDouble())) >= 0;
             if (isMine) {
                 return MineField.INSTANCE;
             } else {
-                BigDecimal random = BigDecimal.valueOf(Math.random());
+                BigDecimal random = BigDecimal.valueOf(ThreadLocalRandom.current().nextDouble());
                 BigDecimal multiplier = random.multiply(maxMultiplier.subtract(minMultiplier)).add(minMultiplier);
                 return new MultiplierField(multiplier);
             }
