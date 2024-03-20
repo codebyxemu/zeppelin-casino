@@ -39,7 +39,6 @@ big-win-announce:
   command: broadcast &e&l(CASINO) &a%username%&7 just won &e%winning% &7from &a%game%
     &7(&f%multiplier%x&7)
 
-
 ####################################################
 #           ENABLE OR DISABLE GAMES                #
 ####################################################
