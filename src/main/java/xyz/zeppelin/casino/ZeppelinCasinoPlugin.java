@@ -9,6 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import xyz.zeppelin.casino.bridge.EconomyBridge;
 import xyz.zeppelin.casino.bstats.BstatsComponent;
 import xyz.zeppelin.casino.command.CasinoCommand;
+import xyz.zeppelin.casino.command.ReloadCommand;
 import xyz.zeppelin.casino.commandapi.CommandApiComponent;
 import xyz.zeppelin.casino.common.Environment;
 import xyz.zeppelin.casino.component.ComponentManager;
@@ -27,7 +28,8 @@ public class ZeppelinCasinoPlugin extends JavaPlugin {
             EconomyBridge.createDetected(this),
             new CommandApiComponent(this),
             new BstatsComponent(this),
-            new CasinoCommand(this)
+            new CasinoCommand(this),
+            new ReloadCommand(this)
     ));
 
     @Override
@@ -36,7 +38,6 @@ public class ZeppelinCasinoPlugin extends JavaPlugin {
             getLogger().warning("Development mode is enabled. Be careful this may be dangerous for production environments!");
         }
         componentManager.loadComponents();
-
     }
 
     @Override

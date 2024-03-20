@@ -6,3 +6,8 @@ bet-cant-be-higher-than-maximum: "&cBet can't be higher than the maximum bet."
 insufficient-balance-to-bet: "&cYou don't have enough balance to bet that amount."
 
 game-does-not-exist: "&cThis game does not exist."
+
+config-reload-success: "&aConfigurations reloaded successfully."
+config-reload-failed: "&cFailed to reload configurations."
+
+no-permission: "&cYou cannot do this! You don't have permission."

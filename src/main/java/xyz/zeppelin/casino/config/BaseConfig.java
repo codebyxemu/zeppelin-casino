@@ -55,4 +55,8 @@ public abstract class BaseConfig implements PluginComponent {
             logger.log(Level.SEVERE, "Could not load default messages configuration", e);
         }
     }
+
+    public void reload() {
+        load();
+    }
 }
