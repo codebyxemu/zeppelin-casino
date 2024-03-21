@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.ChatColor;
 
+/**
+ * A simple message class that allows for easy colorization and placeholder replacement.
+ */
 @AllArgsConstructor
 public class Message {
 
@@ -21,6 +24,8 @@ public class Message {
         this.message = placeholder.replace(placeholder, s);
         return this;
     }
+
+
 
 
 
