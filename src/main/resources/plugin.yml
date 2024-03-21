@@ -4,5 +4,5 @@ main: "xyz.zeppelin.casino.ZeppelinCasinoPlugin"
 version: "${version}"
 authors: [ "Zeppelin", "AtomBuilt" ]
 api-version: "1.16"
-softdepend: [ "Vault" ]
+softdepend: [ "Vault", "PlayerPoints", "EcoBits" ]
 load: STARTUP
