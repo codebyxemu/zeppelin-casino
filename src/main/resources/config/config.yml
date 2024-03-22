@@ -21,6 +21,19 @@ license:
   license-key: ''
 
 ####################################################
+#             FORCE A ECONOMY BRIDGE               #
+# To force a economy bridge, use this feature. Normally  #
+# the plugin will automatically detect the economy  #
+# plugin. If you want to force a specific economy   #
+# plugin, you can do so here.
+####################################################
+economy-bridge-force:
+  # Only enable if developer requests you to do so.
+  enabled: false
+  # Supported Bridges: Vault, PlayerPoints (Case-insensitive)
+  bridge: "Vault"
+
+####################################################
 #            DISCORD INTEGRATION                   #
 #  Receive logs on every bet placed.               #
 ####################################################

@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "xyz.zeppelin"
-version = "1.1.2"
+version = "1.1.3"
 
 repositories {
     mavenCentral()
@@ -18,28 +18,34 @@ repositories {
     maven("https://jitpack.io") // Jitpack
     maven("https://repo.demeng.dev/releases") // Sentinel licensing
     maven("https://repo.rosewooddev.io/repository/public/") // PlayerPoints
-    maven("https://repo.auxilor.io/repository/maven-public/") // EcoBits
+    maven("https://repo.auxilor.io/repository/maven-public/") // Auxilor//EcoBits
 }
 
 dependencies {
     // Spigot
     compileOnly("org.spigotmc", "spigot-api", "1.16.4-R0.1-SNAPSHOT")
+
+    // Vault
     compileOnly("com.github.MilkBowl", "VaultAPI", "1.7")
+
     // CommandAPI
     implementation("dev.jorel", "commandapi-bukkit-shade", "9.3.0")
-    // Java
+
+    // Lombok
     compileOnly("org.projectlombok", "lombok", "1.18.30")
     annotationProcessor("org.projectlombok", "lombok", "1.18.30")
+
     // Bstats
     implementation("org.bstats", "bstats-bukkit", "3.0.2")
 
     // Player Points
     compileOnly("org.black_ixx:playerpoints:3.2.6")
+
+    // EcoBits
     compileOnly("com.willfp:EcoBits:1.8.4")
 
     // Sentinel Licensing
     implementation ("dev.demeng:sentinel-java-wrapper:1.2.0") {
-        // Exclude GSON if it's already available
         exclude(group = "com.google.code.gson", module = "gson")
     }
 }

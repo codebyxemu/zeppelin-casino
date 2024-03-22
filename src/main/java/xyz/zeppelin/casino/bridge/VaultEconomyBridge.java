@@ -5,7 +5,9 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicesManager;
+import xyz.zeppelin.casino.component.ComponentManager;
 import xyz.zeppelin.casino.component.PluginComponent;
+import xyz.zeppelin.casino.config.MainConfig;
 
 import java.math.BigDecimal;
 import java.util.Objects;

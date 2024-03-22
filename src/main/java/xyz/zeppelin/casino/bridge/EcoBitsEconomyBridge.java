@@ -1,53 +1,52 @@
 package xyz.zeppelin.casino.bridge;
 
 import lombok.RequiredArgsConstructor;
-import org.black_ixx.playerpoints.PlayerPoints;
-import org.black_ixx.playerpoints.PlayerPointsAPI;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.ServicesManager;
 import xyz.zeppelin.casino.component.PluginComponent;
 
 import java.math.BigDecimal;
+import java.util.Objects;
+
 
 @RequiredArgsConstructor
 public class EcoBitsEconomyBridge implements EconomyBridge, PluginComponent {
 
     private final Plugin plugin;
-    private PlayerPointsAPI ppApi;
-
-    private int has(Player player) {
-        return ppApi.look(player.getUniqueId());
-    }
+    private Currency economy;
 
     @Override
     public boolean withdraw(Player player, BigDecimal amount) {
-        if (!(has(player) < amount.intValue())) return false;
-        return ppApi.take(player.getUniqueId(), amount.intValue());
+        if (!economy.has(player, amount.doubleValue())) return false;
+        return economy.withdrawPlayer(player, amount.doubleValue()).transactionSuccess();
     }
 
     @Override
     public boolean deposit(Player player, BigDecimal amount) {
-        return ppApi.give(player.getUniqueId(), amount.intValue());
+        return economy.depositPlayer(player, amount.doubleValue()).transactionSuccess();
     }
 
     @Override
     public boolean hasSufficientBalance(Player player, BigDecimal amount) {
-        return has(player) >= amount.intValue();
+        return economy.has(player, amount.doubleValue());
     }
 
     @Override
     public BigDecimal getBalance(Player player) {
-        return BigDecimal.valueOf(has(player));
+        return BigDecimal.valueOf(economy.getBalance(player));
     }
 
     @Override
     public void onEnable() {
-        this.ppApi = PlayerPoints.getInstance().getAPI();
+        ServicesManager servicesManager = plugin.getServer().getServicesManager();
+        economy = Objects.requireNonNull(servicesManager.getRegistration(Economy.class)).getProvider();
     }
 
     public static EconomyBridge detect(Plugin plugin) {
         try {
-            Class.forName("org.black_ixx.playerpoints.PlayerPoints");
+            Class.forName("com.willfp.ecobits.EcoBitsPlugin");
         } catch (ClassNotFoundException e) {
             return null;
         }

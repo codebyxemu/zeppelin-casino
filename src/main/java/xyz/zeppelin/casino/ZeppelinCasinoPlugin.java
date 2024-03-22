@@ -25,11 +25,11 @@ public class ZeppelinCasinoPlugin extends JavaPlugin {
     private final ComponentManager componentManager = ComponentManager.register(this, List.of(
             MainConfig.createDefault(this),
             MessagesConfig.createDefault(this),
-            EconomyBridge.createDetected(this),
             new CommandApiComponent(this),
             new BstatsComponent(this),
             new CasinoCommand(this),
-            new ReloadCommand(this)
+            new ReloadCommand(this),
+            EconomyBridge.createDetected(this)
     ));
 
     @Override

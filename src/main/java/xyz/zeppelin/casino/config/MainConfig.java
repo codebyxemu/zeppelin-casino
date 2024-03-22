@@ -130,6 +130,14 @@ public class MainConfig extends BaseConfig {
         return Objects.requireNonNull(configuration.getString("discord.webhook-url"));
     }
 
+    public boolean isForceEconomyBridge() {
+        return configuration.getBoolean("economy-bridge-force.enabled");
+    }
+
+    public String getForcedEconomyBridge() {
+        return Objects.requireNonNull(configuration.getString("economy-bridge-force.bridge"));
+    }
+
     public static MainConfig createDefault(Plugin plugin) {
         return new MainConfig(new File(plugin.getDataFolder(), "config.yml"), "/config/config.yml", plugin.getLogger());
     }
