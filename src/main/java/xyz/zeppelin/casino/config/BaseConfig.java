@@ -39,7 +39,7 @@ public abstract class BaseConfig implements PluginComponent {
         }
     }
 
-    private void save() {
+    public void save() {
         try {
             configuration.save(file);
         } catch (IOException e) {

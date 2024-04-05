@@ -1,21 +1,21 @@
-package xyz.zeppelin.casino.bridge;
+package xyz.zeppelin.casino.bridge.economy;
 
 import lombok.RequiredArgsConstructor;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicesManager;
+import xyz.zeppelin.casino.bridge.EconomyBridge;
 import xyz.zeppelin.casino.component.PluginComponent;
 
 import java.math.BigDecimal;
 import java.util.Objects;
 
-
 @RequiredArgsConstructor
-public class EcoBitsEconomyBridge implements EconomyBridge, PluginComponent {
+public class VaultEconomyBridge implements EconomyBridge, PluginComponent {
 
     private final Plugin plugin;
-    private Currency economy;
+    private Economy economy;
 
     @Override
     public boolean withdraw(Player player, BigDecimal amount) {
@@ -46,10 +46,10 @@ public class EcoBitsEconomyBridge implements EconomyBridge, PluginComponent {
 
     public static EconomyBridge detect(Plugin plugin) {
         try {
-            Class.forName("com.willfp.ecobits.EcoBitsPlugin");
+            Class.forName("net.milkbowl.vault.economy.Economy");
         } catch (ClassNotFoundException e) {
             return null;
         }
-        return new EcoBitsEconomyBridge(plugin);
+        return new VaultEconomyBridge(plugin);
     }
 }

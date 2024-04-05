@@ -6,8 +6,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import xyz.zeppelin.casino.bridge.DatabaseBridge;
+import xyz.zeppelin.casino.bridge.database.FlatFileDatabaseBridge;
 import xyz.zeppelin.casino.component.ComponentManager;
 import xyz.zeppelin.casino.config.MainConfig;
+import xyz.zeppelin.casino.data.StoredBet;
 import xyz.zeppelin.casino.discord.DiscordWebhook;
 
 import java.awt.*;
@@ -39,6 +42,8 @@ public abstract class SinglePlayerGameSession<T extends Game> extends BaseGameSe
     protected boolean discordWebhookEnabled;
     protected String discordWebhookUrl;
 
+    protected FlatFileDatabaseBridge databaseBridge;
+
     public SinglePlayerGameSession(PlayerBetManager playerBetManager) {
         this.plugin = playerBetManager.getPlugin();
         this.player = playerBetManager.getPlayer();
@@ -51,10 +56,21 @@ public abstract class SinglePlayerGameSession<T extends Game> extends BaseGameSe
 
         this.discordWebhookEnabled = mainConfig.isDiscordWebhookEnabled();
         this.discordWebhookUrl = mainConfig.getDiscordWebhook();
+
+        this.databaseBridge = ComponentManager.getComponentManager(plugin).getComponent(FlatFileDatabaseBridge.class);
     }
 
     protected final void openSummaryUI(String gameName, boolean isWin, Consumer<PlayerBetManager> repeat) {
         GameSummaryUserInterface.open(betManager, repeat, gameName, isWin);
+
+        databaseBridge.addBet(
+                StoredBet.createDefault(
+                        player.getUniqueId(),
+                        gameName,
+                        betManager.getBetAmount(),
+                        betManager.getMultiplier().doubleValue()
+                )
+        );
 
         if (bigWinAnnounce) {
 

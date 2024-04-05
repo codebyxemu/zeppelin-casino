@@ -1,0 +1,3 @@
+# Ignore this if not using database type: flat
+
+db: null

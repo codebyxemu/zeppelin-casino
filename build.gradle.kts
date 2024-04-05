@@ -41,9 +41,6 @@ dependencies {
     // Player Points
     compileOnly("org.black_ixx:playerpoints:3.2.6")
 
-    // EcoBits
-    compileOnly("com.willfp:EcoBits:1.8.4")
-
     // Sentinel Licensing
     implementation ("dev.demeng:sentinel-java-wrapper:1.2.0") {
         exclude(group = "com.google.code.gson", module = "gson")

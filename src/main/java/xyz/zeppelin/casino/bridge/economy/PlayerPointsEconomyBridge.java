@@ -1,16 +1,14 @@
-package xyz.zeppelin.casino.bridge;
+package xyz.zeppelin.casino.bridge.economy;
 
 import lombok.RequiredArgsConstructor;
-import net.milkbowl.vault.economy.Economy;
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.black_ixx.playerpoints.PlayerPointsAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.ServicesManager;
+import xyz.zeppelin.casino.bridge.EconomyBridge;
 import xyz.zeppelin.casino.component.PluginComponent;
 
 import java.math.BigDecimal;
-import java.util.Objects;
 
 @RequiredArgsConstructor
 public class PlayerPointsEconomyBridge implements EconomyBridge, PluginComponent {

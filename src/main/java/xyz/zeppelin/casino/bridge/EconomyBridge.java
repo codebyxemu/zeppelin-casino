@@ -3,9 +3,10 @@ package xyz.zeppelin.casino.bridge;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-import xyz.zeppelin.casino.component.ComponentManager;
+import xyz.zeppelin.casino.bridge.economy.InMemoryEconomyBridge;
+import xyz.zeppelin.casino.bridge.economy.PlayerPointsEconomyBridge;
+import xyz.zeppelin.casino.bridge.economy.VaultEconomyBridge;
 import xyz.zeppelin.casino.component.PluginComponent;
-import xyz.zeppelin.casino.config.MainConfig;
 
 import java.math.BigDecimal;
 

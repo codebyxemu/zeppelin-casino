@@ -1,13 +1,14 @@
-package xyz.zeppelin.casino.bridge;
+package xyz.zeppelin.casino.bridge.economy;
 
 import org.bukkit.entity.Player;
+import xyz.zeppelin.casino.bridge.EconomyBridge;
 
 import java.math.BigDecimal;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-class InMemoryEconomyBridge implements EconomyBridge {
+public class InMemoryEconomyBridge implements EconomyBridge {
 
     private final Map<UUID, BigDecimal> balances = new ConcurrentHashMap<>();
 
