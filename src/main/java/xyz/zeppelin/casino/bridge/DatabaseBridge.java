@@ -11,6 +11,7 @@ import xyz.zeppelin.casino.data.StoredBet;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.function.Predicate;
 
@@ -29,5 +30,15 @@ public interface DatabaseBridge extends PluginComponent {
     StoredBet getBet(UUID uuid);
 
     List<StoredBet> allBets();
+
+    Map<Integer, Player> leaderboard();
+
+    void setTotalProfit(Player player, double profit);
+
+    double getTotalProfit(Player player);
+
+    Map<Player, Double> getAllPlayers();
+
+    Map<Player, Double> getTopTenPlayers();
 
 }

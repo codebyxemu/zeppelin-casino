@@ -31,6 +31,14 @@ public class MainConfig extends BaseConfig {
         return Objects.requireNonNull(configuration.getString("license.license-key"));
     }
 
+    public boolean isBetLimitationEnabled() {
+        return configuration.getBoolean("gamble-responsibility.bet-limitation.enabled");
+    }
+
+    public int getBetLimit() {
+        return configuration.getInt("gamble-responsibility.bet-limitation.max-bet");
+    }
+
     public boolean gameStatus(String gameName) {
         String[] acceptedGames = {"coinflip", "crash", "mines", "slots", "wheel"};
         if (List.of(acceptedGames).contains(gameName)) {

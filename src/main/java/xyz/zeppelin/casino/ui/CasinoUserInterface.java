@@ -2,9 +2,11 @@ package xyz.zeppelin.casino.ui;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
 import xyz.zeppelin.casino.component.ComponentManager;
 import xyz.zeppelin.casino.config.MainConfig;
 import xyz.zeppelin.casino.config.MessagesConfig;
@@ -13,6 +15,9 @@ import xyz.zeppelin.casino.game.crash.CrashGameUserInterfaceItem;
 import xyz.zeppelin.casino.game.mines.MinesGameUserInterfaceItem;
 import xyz.zeppelin.casino.game.slots.SlotsGameUserInterfaceItem;
 import xyz.zeppelin.casino.game.wheel.WheelGameUserInterfaceItem;
+import xyz.zeppelin.casino.message.Message;
+import xyz.zeppelin.casino.ui.stats.StatisticsUserInterface;
+import xyz.zeppelin.casino.utils.ItemBuilder;
 
 import java.util.Objects;
 
@@ -71,8 +76,26 @@ public class CasinoUserInterface extends InventoryUserInterface {
         blueGlass.setItemMeta(blueGlassMeta);
         InventoryUserInterfaceItem blueGlassItem = InventoryUserInterfaceItem.staticItem(blueGlass);
 
-        addItem(blackGlassItem, 0, 1, 7, 8, 9, 11, 12, 13, 14, 15, 17, 27, 29, 30, 31, 32, 33, 35, 36, 37, 43, 44);
+        addItem(blackGlassItem, 0, 1, 7, 8, 9, 11, 12, 13, 14, 15, 17, 27, 29, 30, 31, 32, 33, 35, 36, 37, 43);
         addItem(blueGlassItem, 2, 3, 4, 5, 6, 10, 16, 18, 19, 25, 26, 28, 34, 38, 42);
+
+        addItem(44,
+                new InventoryUserInterfaceItem() {
+                    @Override
+                    public ItemStack render() {
+                        return new ItemBuilder(Material.PAPER)
+                                .displayname(new Message("&aView Statistics").colorize().getMessage())
+                                .build();
+                    }
+
+                    @Override
+                    public boolean onClick(InventoryClickEvent event) {
+                        event.setCancelled(true);
+                        new StatisticsUserInterface((JavaPlugin) plugin, (Player) event.getWhoClicked(), (Player) event.getWhoClicked()).open();
+                        return false;
+                    }
+                }
+        );
     }
 
     public static void open(Plugin plugin, Player player) {

@@ -72,6 +72,8 @@ public abstract class SinglePlayerGameSession<T extends Game> extends BaseGameSe
                 )
         );
 
+        databaseBridge.setTotalProfit(player, databaseBridge.getTotalProfit(player) + betManager.calculateWinning().doubleValue());
+
         if (bigWinAnnounce) {
 
             if (isWin && betManager.getMultiplier().compareTo(BigDecimal.valueOf(bigWinMultiplier)) >= 0) {

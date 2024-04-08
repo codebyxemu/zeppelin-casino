@@ -57,6 +57,11 @@ public class ZeppelinCasinoPlugin extends JavaPlugin {
                     "The plugin will shut down now. You can receive a license in our Discord server.");
             getServer().getPluginManager().disablePlugin(this);
         }
+
+        // Manage the FlatFileDatabaseBridge
+        FlatFileDatabaseBridge databaseBridge = ComponentManager.getComponentManager(this).getComponent(FlatFileDatabaseBridge.class);
+        databaseBridge.onEnable();
+
     }
 
 

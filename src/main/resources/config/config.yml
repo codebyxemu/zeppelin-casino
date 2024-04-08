@@ -44,6 +44,17 @@ discord:
   webhook-url: ""
 
 ####################################################
+#           GAMBLE RESPONSIBILY                #
+####################################################
+gamble-responsibility:
+  bet-limitation:
+    # Enable or disable the bet limitation feature
+    enabled: false
+    # The maximum amount of bets the player can place in a day
+    max-bet: 100
+
+
+####################################################
 #           BIG WIN ANNOUNCEMENT                 #
 ####################################################
 big-win-announce:

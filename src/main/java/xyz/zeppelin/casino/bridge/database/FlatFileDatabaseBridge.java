@@ -1,6 +1,7 @@
 package xyz.zeppelin.casino.bridge.database;
 
 import org.apache.commons.lang.Validate;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -11,20 +12,22 @@ import xyz.zeppelin.casino.config.DatabaseConfig;
 import xyz.zeppelin.casino.data.StoredBet;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class FlatFileDatabaseBridge implements DatabaseBridge {
 
     protected Plugin plugin;
-    private final DatabaseConfig config;
+    private DatabaseConfig config;
 
     public FlatFileDatabaseBridge(Plugin plugin) {
         this.plugin = plugin;
         Validate.notNull(plugin, "plugin cannot be null");
+    }
 
+    @Override
+    public void onEnable() {
         this.config = ComponentManager.getComponentManager(plugin).getComponent(DatabaseConfig.class);
     }
 
@@ -90,6 +93,46 @@ public class FlatFileDatabaseBridge implements DatabaseBridge {
         });
 
         return bets;
+    }
+
+    @Override
+    public Map<Integer, Player> leaderboard() {
+        return null;
+    }
+
+    @Override
+    public void setTotalProfit(Player player, double profit) {
+        if (config.getYamlConfig().contains("players." + player.getUniqueId())) {
+            config.getYamlConfig().set("players." + player.getUniqueId(), null);
+        }
+        config.getYamlConfig().set("players." + player.getUniqueId(), profit);
+        config.save();
+    }
+
+    @Override
+    public double getTotalProfit(Player player) {
+        return config.getYamlConfig().getDouble("players." + player.getUniqueId(), 0.0);
+    }
+
+    @Override
+    public Map<Player, Double> getAllPlayers() {
+        final Map<Player, Double> players = new HashMap<>();
+
+        config.getYamlConfig().getConfigurationSection("players").getKeys(false).forEach(uuid -> {
+            Player player = Bukkit.getPlayer(UUID.fromString(uuid));
+            double profit = config.getYamlConfig().getDouble("players." + uuid);
+            players.put(player, profit);
+        });
+
+        return players;
+    }
+
+    @Override
+    public Map<Player, Double> getTopTenPlayers() {
+        Map<Player, Double> players = getAllPlayers().keySet().stream().sorted(Comparator.comparingDouble(player -> getAllPlayers().get(player)))
+                .collect(Collectors.toMap(player -> player, player -> getAllPlayers().get(player), (e1, e2) -> e1, LinkedHashMap::new));
+
+        return players.entrySet().stream().limit(10).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     public static FlatFileDatabaseBridge create(Plugin plugin) {
