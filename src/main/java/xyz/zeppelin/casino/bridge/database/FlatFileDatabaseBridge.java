@@ -58,6 +58,7 @@ public class FlatFileDatabaseBridge implements DatabaseBridge {
         config.getYamlConfig().set("bets." + bet.getBetId() + ".amount", bet.getAmount().toString());
         config.getYamlConfig().set("bets." + bet.getBetId() + ".multiplier", bet.getMultiplier());
         config.getYamlConfig().set("bets." + bet.getBetId() + ".win", bet.isWin());
+        config.getYamlConfig().set("bets." + bet.getBetId() + ".totalWinnings", bet.getTotalWinnings().toString());
 
         config.save();
     }
@@ -88,8 +89,9 @@ public class FlatFileDatabaseBridge implements DatabaseBridge {
             BigDecimal amount = new BigDecimal(config.getYamlConfig().getString("bets." + betId + ".amount"));
             double multiplier = config.getYamlConfig().getDouble("bets." + betId + ".multiplier");
             boolean win = config.getYamlConfig().getBoolean("bets." + betId + ".win");
+            BigDecimal totalWinnings = new BigDecimal(config.getYamlConfig().getString("bets." + betId + ".totalWinnings"));
 
-            bets.add(new StoredBet(UUID.fromString(betId), player, game, amount, multiplier, win));
+            bets.add(new StoredBet(UUID.fromString(betId), player, game, amount, multiplier, win, totalWinnings));
         });
 
         return bets;
@@ -102,16 +104,17 @@ public class FlatFileDatabaseBridge implements DatabaseBridge {
 
     @Override
     public void setTotalProfit(Player player, double profit) {
-        if (config.getYamlConfig().contains("players." + player.getUniqueId())) {
-            config.getYamlConfig().set("players." + player.getUniqueId(), null);
-        }
-        config.getYamlConfig().set("players." + player.getUniqueId(), profit);
-        config.save();
+
     }
 
     @Override
     public double getTotalProfit(Player player) {
-        return config.getYamlConfig().getDouble("players." + player.getUniqueId(), 0.0);
+        BigDecimal totalWinnings = getTotalWagered(player);
+        BigDecimal totalLosses = allBets().stream()
+                .filter(bet -> bet.getPlayer().equals(player.getUniqueId()) && !bet.isWin())
+                .map(StoredBet::getAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        return totalWinnings.subtract(totalLosses).doubleValue();
     }
 
     @Override

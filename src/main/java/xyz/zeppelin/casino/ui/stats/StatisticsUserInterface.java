@@ -62,6 +62,13 @@ public class StatisticsUserInterface implements Listener {
         // head: 11
         // items: 13, 14, 15, 16, 17
 
+        double winningsTotal = databaseBridge.allBets().stream().filter(StoredBet::isWin).mapToDouble(StoredBet::getTotalWinningsAsDouble).sum();
+        double lossesTotal = databaseBridge.allBets().stream().filter(bet -> !bet.isWin()).mapToDouble(StoredBet::getAmountAsDouble).sum();
+
+        // Create both formatted values as strings with a maximum of 2 decimal places, with a dollar sign.
+        String winningsTotalFormatted = String.format("$%.2f", winningsTotal);
+        String lossesTotalFormatted = String.format("$%.2f", lossesTotal);
+
         ItemStack totalWagered = new ItemBuilder(Material.DIAMOND)
                 .displayname(new Message("&aTotal Wagered").colorize().getMessage())
                 .lore(
@@ -71,18 +78,18 @@ public class StatisticsUserInterface implements Listener {
                 .build();
 
         ItemStack totalWins = new ItemBuilder(Material.DIAMOND)
-                .displayname(new Message("&aTotal Wins").colorize().getMessage())
+                .displayname(new Message("&aTotal Winnings").colorize().getMessage())
                 .lore(
-                        new Message("&7Total amount of wins:").colorize().getMessage(),
-                        new Message("&a" + databaseBridge.getWins(target)).colorize().getMessage()
+                        new Message("&7Total amount of money won:").colorize().getMessage(),
+                        new Message("&a" + winningsTotalFormatted).colorize().getMessage()
                 )
                 .build();
 
         ItemStack totalLosses = new ItemBuilder(Material.DIAMOND)
                 .displayname(new Message("&aTotal Losses").colorize().getMessage())
                 .lore(
-                        new Message("&7Total amount of losses:").colorize().getMessage(),
-                        new Message("&a" + databaseBridge.getLosses(target)).colorize().getMessage()
+                        new Message("&7Total of money lost:").colorize().getMessage(),
+                        new Message("&a" + lossesTotalFormatted).colorize().getMessage()
                 )
                 .build();
 
@@ -92,19 +99,11 @@ public class StatisticsUserInterface implements Listener {
                 .map(StoredBet::getAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        ItemStack totalProfit = new ItemBuilder(Material.DIAMOND)
-                .displayname(new Message("&aTotal Profit").colorize().getMessage())
-                .lore(
-                        new Message("&7Total amount of profit:").colorize().getMessage(),
-                        new Message("&a$" + lossesAmountOfMoney.doubleValue()).colorize().getMessage()
-                )
-                .build();
 
         inventory.setItem(10, head);
         inventory.setItem(12, totalWagered);
         inventory.setItem(13, totalWins);
         inventory.setItem(14, totalLosses);
-        inventory.setItem(15, totalProfit);
 
         inventory.setItem(26, new ItemBuilder(Material.BARRIER).displayname(new Message("&cBack").colorize().getMessage()).build());
 
@@ -118,7 +117,7 @@ public class StatisticsUserInterface implements Listener {
 
     @EventHandler
     public void onItemClick(InventoryClickEvent event) {
-        if (!event.getClickedInventory().equals(inventory)) {
+        if (!(event.getClickedInventory().equals(inventory)) || event.getClickedInventory() == null) {
             return;
         }
 

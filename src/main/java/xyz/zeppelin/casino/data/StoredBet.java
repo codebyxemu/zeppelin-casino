@@ -19,8 +19,18 @@ public class StoredBet {
     private BigDecimal amount;
     private double multiplier;
     private boolean win;
+    private BigDecimal totalWinnings;
 
-    public static StoredBet createDefault(UUID player, String game, BigDecimal amount, double multiplier) {
-        return new StoredBet(UUID.randomUUID(), player, game, amount, multiplier, multiplier > 1);
+    public static StoredBet createDefault(UUID player, String game, BigDecimal amount, double multiplier, BigDecimal totalWinnings) {
+        return new StoredBet(UUID.randomUUID(), player, game, amount, multiplier, multiplier > 1, totalWinnings);
     }
+
+    public double getAmountAsDouble() {
+        return amount.doubleValue();
+    }
+
+    public double getTotalWinningsAsDouble() {
+        return totalWinnings.doubleValue();
+    }
+
 }

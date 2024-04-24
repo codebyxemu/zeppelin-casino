@@ -8,8 +8,7 @@ plugins {
 }
 
 group = "xyz.zeppelin"
-//version = "1.1.3"
-version = "1.1.4-beta"
+version = "1.1.3"
 
 repositories {
     mavenCentral()
@@ -71,7 +70,7 @@ tasks {
         group = "build"
 
         from(sourceSets.main.get().runtimeClasspath)
-        archiveFileName = "production-${version}.jar"
+        archiveFileName = "ZeppelinCasino-v${version}.jar"
 
         // Relocate some dependencies to avoid conflicts with other plugins
         relocate("dev.jorel.commandapi", "xyz.zeppelin.casino.commandapi")
