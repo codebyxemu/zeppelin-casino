@@ -68,7 +68,8 @@ public abstract class SinglePlayerGameSession<T extends Game> extends BaseGameSe
                         player.getUniqueId(),
                         gameName,
                         betManager.getBetAmount(),
-                        betManager.getMultiplier().doubleValue()
+                        betManager.getMultiplier().doubleValue(),
+                        betManager.calculateWinning()
                 )
         );
 

@@ -39,7 +39,7 @@ public class ZeppelinCasinoPlugin extends JavaPlugin {
     @Override
     public void onLoad() {
         if (Environment.isDevelopmentMode()) {
-            getLogger().warning("Development mode is enabled. Be careful this may be dangerous for production environments!");
+            getLogger().warning("[ZeppelinCasino] Development mode is enabled. Be careful this may be dangerous for production environments!");
         }
         componentManager.loadComponents();
     }
@@ -48,20 +48,15 @@ public class ZeppelinCasinoPlugin extends JavaPlugin {
     public void onEnable() {
         componentManager.enableComponents();
 
-        Bukkit.getLogger().info("Welcome to Zeppelin Casino v" + getDescription().getVersion() + ".");
-
-        if (authenticate()) {
-            Bukkit.getLogger().info("Your license was confirmed. Thanks for your purchase!");
-        } else {
-            Bukkit.getLogger().warning("You do not have a valid license for Zeppelin Casino. " +
-                    "The plugin will shut down now. You can receive a license in our Discord server.");
-            getServer().getPluginManager().disablePlugin(this);
+        if (!authenticate()) {
+            this.getServer().getPluginManager().disablePlugin(this);
         }
+
+        Bukkit.getLogger().info("[ZeppelinCasino] Welcome to Zeppelin Casino v" + getDescription().getVersion() + ".");
 
         // Manage the FlatFileDatabaseBridge
         FlatFileDatabaseBridge databaseBridge = ComponentManager.getComponentManager(this).getComponent(FlatFileDatabaseBridge.class);
         databaseBridge.onEnable();
-
     }
 
 
@@ -76,8 +71,15 @@ public class ZeppelinCasinoPlugin extends JavaPlugin {
         String licenseKey = ComponentManager.getComponentManager(this).getComponent(MainConfig.class).getLicenseKey();
         String serverName = ComponentManager.getComponentManager(this).getComponent(MainConfig.class).getServerName();
 
+        if (licenseKey == null || licenseKey.isEmpty()) {
+            Bukkit.getLogger().warning("[ZeppelinCasino] License Validation Failed! You have not configured your " +
+                    "license key in the config.yml file under plugins/ZeppelinCasino. Join our Discord for license key: " +
+                    "https://discord.gg/2BESFv3kGF");
+            return false;
+        }
+
         SentinelClient client = new SentinelClient(
-                "http://193.31.31.184:25206/api/v1",
+                "http://23.230.3.201/api/v1",
                 "ht24ki1c4c6iivkm8ppgo9dcm4",
                 null);
 
