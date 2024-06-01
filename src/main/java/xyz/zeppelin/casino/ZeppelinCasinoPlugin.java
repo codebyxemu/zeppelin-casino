@@ -48,10 +48,6 @@ public class ZeppelinCasinoPlugin extends JavaPlugin {
     public void onEnable() {
         componentManager.enableComponents();
 
-        if (!authenticate()) {
-            this.getServer().getPluginManager().disablePlugin(this);
-        }
-
         Bukkit.getLogger().info("[ZeppelinCasino] Welcome to Zeppelin Casino v" + getDescription().getVersion() + ".");
 
         // Manage the FlatFileDatabaseBridge
@@ -65,36 +61,4 @@ public class ZeppelinCasinoPlugin extends JavaPlugin {
         componentManager.disableComponents();
     }
 
-    private boolean authenticate() {
-        getLogger().info("[ZeppelinCasino] Loading Licensing System...");
-
-        String licenseKey = ComponentManager.getComponentManager(this).getComponent(MainConfig.class).getLicenseKey();
-        String serverName = ComponentManager.getComponentManager(this).getComponent(MainConfig.class).getServerName();
-
-        if (licenseKey == null || licenseKey.isEmpty()) {
-            Bukkit.getLogger().warning("[ZeppelinCasino] License Validation Failed! You have not configured your " +
-                    "license key in the config.yml file under plugins/ZeppelinCasino. Join our Discord for license key: " +
-                    "https://discord.gg/2BESFv3kGF");
-            return false;
-        }
-
-        SentinelClient client = new SentinelClient(
-                "http://23.230.3.201/api/v1",
-                "ht24ki1c4c6iivkm8ppgo9dcm4",
-                null);
-
-        boolean authenticated = false;
-
-        try {
-            client.getLicenseController().auth(
-                    licenseKey, "Casino", null, null, serverName, this.getServer().getIp().toString());
-            authenticated = true;
-        } catch (ApiException e) {
-            Bukkit.getLogger().warning("Failed to verify license: " + e.getResponse().getMessage());
-        } catch (Exception e) {
-            Bukkit.getLogger().warning("An unexpected error occurred: " + e.getMessage());
-        }
-
-        return authenticated;
-    }
 }
