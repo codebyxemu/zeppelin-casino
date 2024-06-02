@@ -95,7 +95,8 @@ public class MainConfig extends BaseConfig {
         BigDecimal crashChance = new BigDecimal(Objects.requireNonNull(gameSection.getString("crash-chance")));
         BigDecimal maxBet = new BigDecimal(Objects.requireNonNull(gameSection.getString("max-bet")));
         BigDecimal minBet = new BigDecimal(Objects.requireNonNull(gameSection.getString("min-bet")));
-        return new CrashGame.Config(maxMultiplier, baseMultiplier, crashChance, maxBet, minBet);
+        BigDecimal minimumCrashMultiplier = new BigDecimal(Objects.requireNonNull(gameSection.getString("minimum-crash-multiplier")));
+        return new CrashGame.Config(maxMultiplier, baseMultiplier, crashChance, maxBet, minBet, minimumCrashMultiplier);
     }
 
     public MinesGame.Config getMinesConfig() {
