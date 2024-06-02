@@ -99,7 +99,6 @@ public class StatisticsUserInterface implements Listener {
                 .map(StoredBet::getAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-
         inventory.setItem(10, head);
         inventory.setItem(12, totalWagered);
         inventory.setItem(13, totalWins);
