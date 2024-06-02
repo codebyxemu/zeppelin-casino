@@ -122,6 +122,8 @@ crash:
   base-multiplier: 0.01
   # For every increment, this is the chance for it to crash. 1.0 is 100%.
   crash-chance: 0.01
+  # The minimum crash multiplier
+  minimum-crash-multiplier: 10.00
 wheel:
   # The minimum bet amount
   min-bet: 10
