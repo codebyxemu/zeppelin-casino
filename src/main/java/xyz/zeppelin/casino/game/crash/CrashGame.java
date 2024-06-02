@@ -11,7 +11,10 @@ public class CrashGame implements Game {
     private final BigDecimal maxMultiplier;
     private final BigDecimal crashChance;
     private final BigDecimal baseMultiplier;
+    private final BigDecimal minimumCrashMultiplier;
+
     @Getter
+
     private BigDecimal multiplier = BigDecimal.ZERO;
     private boolean crashed = false;
 
@@ -19,6 +22,7 @@ public class CrashGame implements Game {
         this.maxMultiplier = config.maxMultiplier;
         this.crashChance = config.crashChance;
         this.baseMultiplier = config.baseMultiplier;
+        this.minimumCrashMultiplier = config.minimumCrashMultiplier;
     }
 
     void grow() {
@@ -33,7 +37,7 @@ public class CrashGame implements Game {
             multiplier = newMultiplier;
         }
         boolean shouldCrash = ThreadLocalRandom.current().nextDouble() < crashChance.doubleValue();
-        if (shouldCrash) crashed = true;
+        if (shouldCrash && newMultiplier.doubleValue() > minimumCrashMultiplier.doubleValue()) crashed = true;
     }
 
     boolean hasStarted() {
@@ -53,7 +57,8 @@ public class CrashGame implements Game {
             BigDecimal baseMultiplier,
             BigDecimal crashChance,
             BigDecimal maxBet,
-            BigDecimal minBet
+            BigDecimal minBet,
+            BigDecimal minimumCrashMultiplier
     ) {
     }
 }
