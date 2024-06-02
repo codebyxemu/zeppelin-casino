@@ -70,9 +70,8 @@ tasks {
         group = "build"
 
         from(sourceSets.main.get().runtimeClasspath)
-        archiveFileName = "ZeppelinCasino-v${version}.jar"
+        archiveFileName = "UNLICENSED-ZeppelinCasino-v${version}.jar"
 
-        // Relocate some dependencies to avoid conflicts with other plugins
         relocate("dev.jorel.commandapi", "xyz.zeppelin.casino.commandapi")
         relocate("org.bstats", "xyz.zeppelin.casino.bstats")
     }
