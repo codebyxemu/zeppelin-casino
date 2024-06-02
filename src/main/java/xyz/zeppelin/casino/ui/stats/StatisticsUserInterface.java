@@ -18,6 +18,7 @@ import xyz.zeppelin.casino.data.StoredBet;
 import xyz.zeppelin.casino.message.Message;
 import xyz.zeppelin.casino.ui.CasinoUserInterface;
 import xyz.zeppelin.casino.utils.ItemBuilder;
+import xyz.zeppelin.casino.utils.NumberUtils;
 
 import java.math.BigDecimal;
 
@@ -66,14 +67,14 @@ public class StatisticsUserInterface implements Listener {
         double lossesTotal = databaseBridge.allBets().stream().filter(bet -> !bet.isWin()).mapToDouble(StoredBet::getAmountAsDouble).sum();
 
         // Create both formatted values as strings with a maximum of 2 decimal places, with a dollar sign.
-        String winningsTotalFormatted = String.format("$%.2f", winningsTotal);
-        String lossesTotalFormatted = String.format("$%.2f", lossesTotal);
+        String winningsTotalFormatted = NumberUtils.fromNumberToFormattedString(BigDecimal.valueOf(winningsTotal));
+        String lossesTotalFormatted = NumberUtils.fromNumberToFormattedString(BigDecimal.valueOf(lossesTotal));
 
         ItemStack totalWagered = new ItemBuilder(Material.DIAMOND)
                 .displayname(new Message("&aTotal Wagered").colorize().getMessage())
                 .lore(
                         new Message("&7Total amount of money wagered:").colorize().getMessage(),
-                        new Message("&a$" + databaseBridge.getTotalWagered(target)).colorize().getMessage()
+                        new Message("&a$" + NumberUtils.fromNumberToFormattedString(databaseBridge.getTotalWagered(target))).colorize().getMessage()
                 )
                 .build();
 
