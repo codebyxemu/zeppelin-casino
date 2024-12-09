@@ -50,7 +50,6 @@ public class ZeppelinCasinoPlugin extends JavaPlugin {
 
         Bukkit.getLogger().info("[ZeppelinCasino] Welcome to Zeppelin Casino v" + getDescription().getVersion() + ".");
 
-        // Manage the FlatFileDatabaseBridge
         FlatFileDatabaseBridge databaseBridge = ComponentManager.getComponentManager(this).getComponent(FlatFileDatabaseBridge.class);
         databaseBridge.onEnable();
     }

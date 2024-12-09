@@ -29,7 +29,7 @@ dependencies {
     compileOnly("com.github.MilkBowl", "VaultAPI", "1.7")
 
     // CommandAPI
-    implementation("dev.jorel", "commandapi-bukkit-shade", "9.3.0")
+    implementation("dev.jorel", "commandapi-bukkit-shade", "9.7.0")
 
     // Lombok
     compileOnly("org.projectlombok", "lombok", "1.18.30")
