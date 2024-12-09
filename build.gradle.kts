@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "xyz.zeppelin"
-version = "1.1.4"
+version = "1.1.5"
 
 repositories {
     mavenCentral()
@@ -70,7 +70,7 @@ tasks {
         group = "build"
 
         from(sourceSets.main.get().runtimeClasspath)
-        archiveFileName = "UNLICENSED-ZeppelinCasino-v${version}.jar"
+        archiveFileName = "zeppelincasino-v${version}.jar"
 
         relocate("dev.jorel.commandapi", "xyz.zeppelin.casino.commandapi")
         relocate("org.bstats", "xyz.zeppelin.casino.bstats")
