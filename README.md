@@ -1,17 +1,4 @@
 # Zeppelin Casino
+This project is no longer receiving updates. Pull requests and commits are happily accepted.
 
-This project is a spigot plugin introducing casino features.
-
-## Structure
-
-This project uses component based architecture. Each feature is a separate component.
-Each component is a separate component.
-
-## How to build
-
-Use the gradle task `shadowJar` for development build and `productionJar` for production build.
-The difference is mainly in relocation of dependencies.
-
-## How to run
-
-Use the gradle task `runServer` to run a paper server with the plugin.
+**Download the JAR from here:** https://builtbybit.com/resources/zeppelin-casino-elite-minecraft-casino.39895/
